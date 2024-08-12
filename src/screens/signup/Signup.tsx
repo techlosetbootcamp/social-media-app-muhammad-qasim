@@ -13,7 +13,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 
-const Login = () => {
+const Signup = () => {
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
@@ -23,16 +23,17 @@ const Login = () => {
         <View style={styles.container}>
           <Logo marginBottom={39} />
           <View style={styles.formContainer}>
+            <Input placeholder="Username" />
             <Input placeholder="Email" />
             <Input placeholder="Password" secureTextEntry={true} />
-            <Text style={styles.forgotPassword}>Forgot password?</Text>
-            <Button text="Login" />
+            <Input placeholder="Confirm Password" secureTextEntry={true} />
+            <Button text="Signup" marginVertical={28} />
             <TouchableOpacity style={styles.loginWithGoogle}>
               <Image
                 source={require('../../assets/images/googleIcon.png')}
                 style={styles.googleIcon}
               />
-              <Text style={styles.loginWithGoogleText}>Login with Google</Text>
+              <Text style={styles.loginWithGoogleText}>Signup with Google</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.orContainer}>
@@ -41,7 +42,7 @@ const Login = () => {
             <View style={styles.line} />
           </View>
           <Text style={styles.dontHaveAccount}>
-            Don't have an account? <Text style={styles.signUp}>Sign up</Text>
+            Already have an account? <Text style={styles.signUp}>Log In.</Text>
           </Text>
         </View>
       </View>
@@ -49,7 +50,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   main: {
@@ -70,21 +71,12 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
   },
-  forgotPassword: {
-    marginTop: 6,
-    textAlign: 'right',
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 12,
-    lineHeight: 14,
-    color: Colors.quaternary,
-  },
 
   loginWithGoogle: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 7,
+    marginTop: 9,
   },
   googleIcon: {
     width: 16,
