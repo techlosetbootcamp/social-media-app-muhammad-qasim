@@ -16,3 +16,8 @@ export type ButtonProps = {
   marginVertical?: number;
   [key: string]: any;
 };
+
+export type ProfilePictureProps = {
+  width?: number;
+  height?: number;
+};

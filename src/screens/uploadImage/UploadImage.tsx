@@ -44,7 +44,7 @@ const UploadImage = () => {
               <Input placeholder="Add post description" />
             </View>
             <View>
-              <Button text="Upload" />
+              <Button text="Upload" marginVertical={21} />
             </View>
           </View>
         </View>
@@ -121,9 +121,10 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   descContainer: {
-    width: '100%',
+    flex: 1,
   },
   desc: {
+    flex: 1,
     justifyContent: 'space-between',
   },
   label: {
