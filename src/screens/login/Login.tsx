@@ -12,21 +12,39 @@ import Backward from '../../components/backward/Backward';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
+import {useLogin} from './useLogin';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
+  const {setEmail, setPassword, login, user, error} = useLogin();
+  // console.log(user);
+
+  const logoutHandler = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('logged out'))
+      .catch(err => console.log(err));
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled">
+      <Button text="logout" onPress={logoutHandler} />
       <View style={styles.main}>
         <Backward />
         <View style={styles.container}>
-          <Logo marginBottom={39} />
+          <Logo marginBottom={39} marginTop={80} />
           <View style={styles.formContainer}>
-            <Input placeholder="Email" />
-            <Input placeholder="Password" secureTextEntry={true} />
+            <Input placeholder="Email/Username" onChangeText={setEmail} />
+            <Input
+              placeholder="Password"
+              secureTextEntry={true}
+              onChangeText={setPassword}
+            />
             <Text style={styles.forgotPassword}>Forgot password?</Text>
-            <Button text="Login" />
+            <Button text="Login" onPress={login} />
+            {error && <Text>{error}</Text>}
             <TouchableOpacity style={styles.loginWithGoogle}>
               <Image
                 source={require('../../assets/images/googleIcon.png')}

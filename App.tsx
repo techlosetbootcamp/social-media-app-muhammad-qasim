@@ -9,12 +9,19 @@ import ResetPassword from './src/screens/resetPassword/ResetPassword';
 import Signup from './src/screens/signup/Signup';
 import UploadImage from './src/screens/uploadImage/UploadImage';
 import SplashScreen from 'react-native-splash-screen';
+import {Provider} from 'react-redux';
+import store from './src/store/store';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
-  return <ProfileSelf />;
+
+  return (
+    <Provider store={store}>
+      <Login />
+    </Provider>
+  );
 };
 
 export default App;

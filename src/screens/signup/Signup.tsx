@@ -12,8 +12,19 @@ import Backward from '../../components/backward/Backward';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
+import {useSignup} from './useSignup';
 
 const Signup = () => {
+  const {
+    setUserName,
+    setEmail,
+    setPassword,
+    setConfirmPassword,
+    handleSignup,
+    user,
+    error,
+  } = useSignup();
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
@@ -21,13 +32,22 @@ const Signup = () => {
       <View style={styles.main}>
         <Backward />
         <View style={styles.container}>
-          <Logo marginBottom={39} />
+          <Logo marginBottom={39} marginTop={80} />
           <View style={styles.formContainer}>
-            <Input placeholder="Username" />
-            <Input placeholder="Email" />
-            <Input placeholder="Password" secureTextEntry={true} />
-            <Input placeholder="Confirm Password" secureTextEntry={true} />
-            <Button text="Signup" marginVertical={28} />
+            <Input placeholder="Username" onChangeText={setUserName} />
+            <Input placeholder="Email" onChangeText={setEmail} />
+            <Input
+              placeholder="Password"
+              secureTextEntry={true}
+              onChangeText={setPassword}
+            />
+            <Input
+              placeholder="Confirm Password"
+              secureTextEntry={true}
+              onChangeText={setConfirmPassword}
+            />
+            <Button text="Signup" marginVertical={28} onPress={handleSignup} />
+            {error && <Text>{error}</Text>}
             <TouchableOpacity style={styles.loginWithGoogle}>
               <Image
                 source={require('../../assets/images/googleIcon.png')}

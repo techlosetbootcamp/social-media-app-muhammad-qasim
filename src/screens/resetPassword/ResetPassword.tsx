@@ -5,8 +5,17 @@ import Backward from '../../components/backward/Backward';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
+import {useResetPassword} from './useResetPassword';
 
 const ResetPassword = () => {
+  const {
+    setOldPassword,
+    setNewPassword,
+    setConfirmPassword,
+    resetPasswordHandler,
+    user,
+    error,
+  } = useResetPassword();
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
@@ -14,11 +23,28 @@ const ResetPassword = () => {
       <View style={styles.main}>
         <Backward />
         <View style={styles.container}>
-          <Logo marginBottom={95} />
-          <Input placeholder="Old Password" />
-          <Input placeholder="New Password" />
-          <Input placeholder="Confirm Password" />
-          <Button text="Reset Password" marginVertical={40} />
+          <Logo marginBottom={95} marginTop={80} />
+          <Input
+            placeholder="Old Password"
+            secureTextEntry={true}
+            onChangeText={setOldPassword}
+          />
+          <Input
+            placeholder="New Password"
+            secureTextEntry={true}
+            onChangeText={setNewPassword}
+          />
+          <Input
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            onChangeText={setConfirmPassword}
+          />
+          <Button
+            text="Reset Password"
+            marginVertical={40}
+            onPress={resetPasswordHandler}
+          />
+          {error && <Text>{error}</Text>}
         </View>
       </View>
     </ScrollView>
