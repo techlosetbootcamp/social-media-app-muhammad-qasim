@@ -33,11 +33,20 @@ export type AuthState = {
   error: string | null;
 };
 
+export type ImageState = {
+  imageUri: string | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+};
 export type LoginUser = {
   identifier: string;
   password: string;
 };
 
+export type UlpoadImage = {
+  imageUri: string;
+  description: string;
+};
 export type SignupUser = {
   userName: string;
   email: string;

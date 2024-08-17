@@ -49,3 +49,14 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(6, {message: 'Password must be at least 6 characters long'}),
 });
+
+export const submitImageSchema = z.object({
+  imageUri: z
+    .string()
+    .min(1, {message: 'Please select an image'})
+    .nullable()
+    .refine(value => value !== null, {message: 'Please select an image'}),
+  description: z
+    .string()
+    .min(1, {message: 'Please write something about the image'}),
+});

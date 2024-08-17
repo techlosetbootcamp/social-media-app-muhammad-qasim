@@ -10,8 +10,13 @@ import React from 'react';
 import {Colors} from '../../constants/Colors';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
+import {useSubmitImageHandler, useUploadImage} from './useUploadImage';
+import Loader from '../../components/loader/Loader';
 
 const UploadImage = () => {
+  const {imageUri, setImageUri, handleSelectImage} = useUploadImage();
+  const {description, setDescription, submitImageHandler, imageState} =
+    useSubmitImageHandler(imageUri, setImageUri);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -27,24 +32,36 @@ const UploadImage = () => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.uploadImageContainer}>
-          <View style={styles.uploadImage}>
-            <View style={styles.uploadImageText}>
-              <Image
-                source={require('../../assets/images/upload.png')}
-                style={{width: 44, height: 48}}
-              />
-              <Text style={styles.uploadText}>Upload Image</Text>
-            </View>
-          </View>
+          {imageUri ? (
+            <Image source={{uri: imageUri}} style={styles.uploadedImage} />
+          ) : (
+            <TouchableOpacity
+              style={styles.uploadImage}
+              onPress={handleSelectImage}>
+              <View style={styles.uploadImageText}>
+                <Image
+                  source={require('../../assets/images/upload.png')}
+                  style={{width: 44, height: 48}}
+                />
+                <Text style={styles.uploadText}>Upload Image</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.descContainer}>
           <View style={styles.desc}>
             <View>
               <Text style={styles.label}>Post Description</Text>
-              <Input placeholder="Add post description" />
+              <Input
+                placeholder="Add post description"
+                onChangeText={setDescription}
+                value={description}
+              />
             </View>
             <View>
-              <Button text="Upload" marginVertical={21} />
+              <Button style={{marginVertical: 21}} onPress={submitImageHandler}>
+                <Loader userStatus={imageState.status} text="Upload" />
+              </Button>
             </View>
           </View>
         </View>
@@ -134,5 +151,10 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Colors.black,
     marginBottom: 8,
+  },
+  uploadedImage: {
+    width: '100%',
+    height: 362,
+    resizeMode: 'contain',
   },
 });

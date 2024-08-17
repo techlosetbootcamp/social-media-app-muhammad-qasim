@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <ResetPassword />
+      <UploadImage />
       <Toast />
     </Provider>
   );
