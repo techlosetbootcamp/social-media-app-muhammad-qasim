@@ -14,11 +14,11 @@ import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 import {useLogin} from './useLogin';
 import auth from '@react-native-firebase/auth';
+import Loader from '../../components/loader/Loader';
 
 const Login = () => {
-  const {setEmail, setPassword, login, user, error} = useLogin();
-  // console.log(user);
-
+  const {setIdentifier, setPassword, identifier, password, login, user} =
+    useLogin();
   const logoutHandler = () => {
     auth()
       .signOut()
@@ -36,15 +36,21 @@ const Login = () => {
         <View style={styles.container}>
           <Logo marginBottom={39} marginTop={80} />
           <View style={styles.formContainer}>
-            <Input placeholder="Email/Username" onChangeText={setEmail} />
+            <Input
+              placeholder="Email/Username"
+              onChangeText={setIdentifier}
+              value={identifier}
+            />
             <Input
               placeholder="Password"
               secureTextEntry={true}
               onChangeText={setPassword}
+              value={password}
             />
             <Text style={styles.forgotPassword}>Forgot password?</Text>
-            <Button text="Login" onPress={login} />
-            {error && <Text>{error}</Text>}
+            <Button style={{marginVertical: 30}} onPress={login}>
+              <Loader userStatus={user.status} text="Login" />
+            </Button>
             <TouchableOpacity style={styles.loginWithGoogle}>
               <Image
                 source={require('../../assets/images/googleIcon.png')}

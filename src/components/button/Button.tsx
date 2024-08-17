@@ -3,23 +3,16 @@ import React from 'react';
 import {Colors} from '../../constants/Colors';
 import {ButtonProps} from '../../types/types';
 
-const Button = ({
-  text,
-  onPress,
-  marginVertical = 30,
-  ...props
-}: ButtonProps) => {
+const Button = ({text, onPress, children, style, ...props}: ButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, {marginVertical}]}
+      style={[styles.button, style]}
       onPress={onPress}
       {...props}>
-      <Text style={styles.buttonText}>{text}</Text>
+      {text ? <Text style={styles.buttonText}>{text}</Text> : children}
     </TouchableOpacity>
   );
 };
-
-export default Button;
 
 const styles = StyleSheet.create({
   button: {
@@ -27,6 +20,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.quaternary,
     borderRadius: 6,
     width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     fontFamily: 'Roboto-Medium',
@@ -37,3 +32,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default Button;

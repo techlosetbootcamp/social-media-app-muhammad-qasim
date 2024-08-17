@@ -11,6 +11,7 @@ import UploadImage from './src/screens/uploadImage/UploadImage';
 import SplashScreen from 'react-native-splash-screen';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   useEffect(() => {
@@ -19,7 +20,8 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Login />
+      <ResetPassword />
+      <Toast />
     </Provider>
   );
 };

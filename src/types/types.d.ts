@@ -7,14 +7,14 @@ export type LogoProps = {
 
 export type TextInputProps = {
   placeholder: string;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export type ButtonProps = {
-  onPress?: () => void;
-  text: string;
-  marginVertical?: number;
-  [key: string]: any;
+  text?: string;
+  onPress?: (event: GestureResponderEvent) => void;
+  style?: StyleProp<ViewStyle>;
+  children?: React.ReactNode;
 };
 
 export type ProfilePictureProps = {
@@ -47,4 +47,9 @@ export type SignupUser = {
 export type ResetPassword = {
   oldPassword: string;
   newPassword: string;
+};
+
+export type LoaderProps = {
+  userStatus: string;
+  text: string;
 };

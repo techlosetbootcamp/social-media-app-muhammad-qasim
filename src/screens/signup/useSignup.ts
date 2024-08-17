@@ -1,37 +1,46 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {signupUser} from '../../store/slice/authSlice';
+import {signUpSchema} from '../../constants/FormSchema';
+import {z} from 'zod';
+import Toast from 'react-native-toast-message';
 
 export const useSignup = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.auth.user);
+  const user = useAppSelector(state => state.auth);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
 
   const signup = async () => {
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      Toast.show({type: 'error', text1: 'Passwords do not match'});
       return;
     }
-    const normalizedUserName = userName
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, '_');
-    const normalizedEmail = email.trim().toLowerCase();
+
     try {
+      signUpSchema.parse({userName, email, password, confirmPassword});
       await dispatch(
         signupUser({
-          userName: normalizedUserName,
-          email: normalizedEmail,
+          userName: userName,
+          email: email,
           password,
         }),
       ).unwrap();
-      setError(null);
-    } catch (err) {
-      setError(err as string);
+      setUserName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      Toast.show({type: 'success', text1: 'Signup successful'});
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        error.errors.forEach(err =>
+          Toast.show({type: 'error', text1: err.message}),
+        );
+      } else {
+        Toast.show({type: 'error', text1: error as string});
+      }
     }
   };
 
@@ -41,7 +50,10 @@ export const useSignup = () => {
     setPassword,
     setConfirmPassword,
     handleSignup: signup,
+    userName,
+    email,
+    password,
+    confirmPassword,
     user,
-    error,
   };
 };

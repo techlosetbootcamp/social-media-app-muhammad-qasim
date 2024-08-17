@@ -16,49 +16,48 @@ const initialState: AuthState = {
 
 export const signupUser = createAsyncThunk(
   'auth/signup',
-  async (data: SignupUser, thunkAPI) => {
+  async (data: SignupUser, {rejectWithValue}) => {
     try {
-      const usernameSnapshot = await firestore()
+      const userName = data.userName.trim().toLowerCase().replace(/\s+/g, '_');
+      const email = data.email.trim().toLowerCase();
+      const userNameSnapshot = await firestore()
         .collection('users')
-        .where('username', '==', data.userName)
+        .where('username', '==', userName)
         .get();
 
-      if (!usernameSnapshot.empty) {
-        throw new Error('Username is already taken.');
+      if (!userNameSnapshot.empty) {
+        return rejectWithValue('Username is already taken.');
       }
-
       const userCredential = await auth().createUserWithEmailAndPassword(
-        data.email,
+        email,
         data.password,
       );
-
-      if (userCredential.user) {
-        await userCredential.user.updateProfile({
-          displayName: data.userName,
-        });
-
-        const updatedUser = auth().currentUser;
-        if (!updatedUser || updatedUser.uid !== userCredential.user.uid) {
-          throw new Error('Failed to retrieve the updated user.');
-        }
-
-        await firestore().collection('users').doc(updatedUser.uid).set({
-          username: data.userName,
-          email: data.email,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-        });
-
-        return {
-          uid: updatedUser.uid,
-          email: updatedUser.email,
-          displayName: updatedUser.displayName,
-        };
-      } else {
-        throw new Error('User creation failed.');
+      const user = userCredential.user;
+      if (!user) {
+        return rejectWithValue('User creation failed.');
       }
-    } catch (error) {
-      console.error('Signup Error:', error);
-      return thunkAPI.rejectWithValue((error as Error).message);
+      await user.updateProfile({
+        displayName: userName,
+      });
+      const updatedUser = auth().currentUser;
+      if (!updatedUser || updatedUser.uid !== user.uid) {
+        return rejectWithValue('Failed to retrieve the updated user.');
+      }
+      await firestore().collection('users').doc(updatedUser.uid).set({
+        username: userName,
+        email: email,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+      return {
+        uid: updatedUser?.uid,
+        email: updatedUser?.email,
+        displayName: updatedUser?.displayName,
+      };
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        return rejectWithValue('Email address is already in use.');
+      }
+      return rejectWithValue('An error occurred during signup.');
     }
   },
 );
@@ -67,35 +66,42 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (data: LoginUser, thunkAPI) => {
     try {
-      let email = data.identifier;
-      if (!data.identifier.includes('@')) {
+      let identifier = data.identifier.trim().toLowerCase();
+      if (!identifier.includes('@')) {
+        identifier = identifier.replace(/\s+/g, '_');
+      }
+      let email = identifier;
+      if (!email.includes('@')) {
         const userSnapshot = await firestore()
           .collection('users')
-          .where('username', '==', data.identifier)
+          .where('username', '==', email)
           .get();
         if (userSnapshot.empty) {
-          throw new Error('No user found with the provided username');
+          return thunkAPI.rejectWithValue(
+            'No user found with the provided username.',
+          );
         }
         email = userSnapshot.docs[0].data().email;
-
         if (!email) {
-          throw new Error('User found but email is not available');
+          return thunkAPI.rejectWithValue('Failed to retrieve the user email.');
         }
       }
       const userCredential = await auth().signInWithEmailAndPassword(
         email,
         data.password,
       );
-      console.log('userCredential', userCredential);
-
       return {
         uid: userCredential.user?.uid,
         email: userCredential.user?.email,
         displayName: userCredential.user?.displayName,
       };
-    } catch (error) {
-      console.error('Login Error:', error);
-      return thunkAPI.rejectWithValue((error as Error).message);
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-credential') {
+        return thunkAPI.rejectWithValue(
+          'Invalid credential. Please try again.',
+        );
+      }
+      return thunkAPI.rejectWithValue('An error occurred during login.');
     }
   },
 );
@@ -110,34 +116,39 @@ export const logoutUser = createAsyncThunk(
     }
   },
 );
+
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email: string, thunkAPI) => {
     try {
+      const normalizedEmail = email.trim().toLowerCase();
       const userSnapshot = await firestore()
         .collection('users')
-        .where('email', '==', email)
+        .where('email', '==', normalizedEmail)
         .get();
 
       if (userSnapshot.empty) {
-        throw new Error('No user found with the provided email');
+        return thunkAPI.rejectWithValue(
+          'No user found with the provided email.',
+        );
       }
-      await auth().sendPasswordResetEmail(email);
+      await auth().sendPasswordResetEmail(normalizedEmail);
       return 'Password reset email sent';
     } catch (error) {
-      console.error('Forgot Password Error:', error);
-      return thunkAPI.rejectWithValue((error as Error).message);
+      return thunkAPI.rejectWithValue(
+        'An error occurred during password reset.',
+      );
     }
   },
 );
 
 export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async ({oldPassword, newPassword}: ResetPassword, {rejectWithValue}) => {
+  async ({oldPassword, newPassword}: ResetPassword, thunkAPI) => {
     try {
       const user = auth().currentUser;
       if (!user) {
-        throw new Error('No user is currently signed in.');
+        return thunkAPI.rejectWithValue('No user is currently signed in.');
       }
 
       const credential = auth.EmailAuthProvider.credential(
@@ -150,10 +161,11 @@ export const resetPassword = createAsyncThunk(
       return 'Password has been updated.';
     } catch (error: any) {
       if (error.code === 'auth/invalid-credential') {
-        return rejectWithValue('The old password is incorrect.');
+        return thunkAPI.rejectWithValue('The old password is incorrect.');
       }
-      console.error('Reset Password Error:', error);
-      return rejectWithValue((error as Error).message);
+      return thunkAPI.rejectWithValue(
+        'An error occurred during password reset.',
+      );
     }
   },
 );

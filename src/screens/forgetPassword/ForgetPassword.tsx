@@ -6,9 +6,10 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 import {useForgetPassword} from './useForgetPassword';
+import Loader from '../../components/loader/Loader';
 
 const ForgetPassword = () => {
-  const {setEmail, forgotPasswordHandler, user, error} = useForgetPassword();
+  const {setEmail, forgotPasswordHandler, email, user} = useForgetPassword();
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
@@ -21,13 +22,10 @@ const ForgetPassword = () => {
             Forgot your password? write your email and we will send you a magic
             link to reset your passwod
           </Text>
-          <Input placeholder="Email" onChangeText={setEmail} />
-          <Button
-            text="Send Magic Link"
-            marginVertical={24}
-            onPress={forgotPasswordHandler}
-          />
-          {error && <Text>{error}</Text>}
+          <Input placeholder="Email" onChangeText={setEmail} value={email} />
+          <Button style={{marginVertical: 24}} onPress={forgotPasswordHandler}>
+            <Loader userStatus={user.status} text="Send Magic Link" />
+          </Button>
         </View>
       </View>
     </ScrollView>

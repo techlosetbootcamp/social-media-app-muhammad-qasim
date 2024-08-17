@@ -3,7 +3,7 @@ import React from 'react';
 import {Colors} from '../../constants/Colors';
 import {TextInputProps} from '../../types/types';
 
-const Input = ({placeholder, ...props}: TextInputProps) => {
+const Input: React.FC<TextInputProps> = ({placeholder, ...props}) => {
   return (
     <TextInput style={styles.textInput} placeholder={placeholder} {...props} />
   );

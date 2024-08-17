@@ -13,6 +13,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 import {useSignup} from './useSignup';
+import Loader from '../../components/loader/Loader';
 
 const Signup = () => {
   const {
@@ -21,8 +22,11 @@ const Signup = () => {
     setPassword,
     setConfirmPassword,
     handleSignup,
+    userName,
+    email,
+    password,
+    confirmPassword,
     user,
-    error,
   } = useSignup();
 
   return (
@@ -34,20 +38,27 @@ const Signup = () => {
         <View style={styles.container}>
           <Logo marginBottom={39} marginTop={80} />
           <View style={styles.formContainer}>
-            <Input placeholder="Username" onChangeText={setUserName} />
-            <Input placeholder="Email" onChangeText={setEmail} />
+            <Input
+              placeholder="Username"
+              onChangeText={setUserName}
+              value={userName}
+            />
+            <Input placeholder="Email" onChangeText={setEmail} value={email} />
             <Input
               placeholder="Password"
               secureTextEntry={true}
               onChangeText={setPassword}
+              value={password}
             />
             <Input
               placeholder="Confirm Password"
               secureTextEntry={true}
               onChangeText={setConfirmPassword}
+              value={confirmPassword}
             />
-            <Button text="Signup" marginVertical={28} onPress={handleSignup} />
-            {error && <Text>{error}</Text>}
+            <Button style={{marginVertical: 28}} onPress={handleSignup}>
+              <Loader userStatus={user.status} text="Signup" />
+            </Button>
             <TouchableOpacity style={styles.loginWithGoogle}>
               <Image
                 source={require('../../assets/images/googleIcon.png')}
