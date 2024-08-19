@@ -61,7 +61,7 @@ export const useSubmitImageHandler = (
       } else {
         Toast.show({
           type: 'error',
-          text1: error.message || 'An error occurred',
+          text1: error || 'An error occurred',
         });
       }
     }

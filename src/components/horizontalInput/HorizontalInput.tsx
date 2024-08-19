@@ -1,24 +1,15 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
-interface HorizontalInputProps {
-  label: string;
-  placeholder: string;
-  style?: ViewStyle | TextStyle;
-  multiline?: boolean;
-}
+import {HorizontalInputProps} from '../../types/types';
 
 const HorizontalInput: React.FC<HorizontalInputProps> = ({
   label,
   placeholder,
   style,
+  value,
+  onChangeText,
+  disabled,
   multiline = false,
 }) => {
   return (
@@ -28,7 +19,10 @@ const HorizontalInput: React.FC<HorizontalInputProps> = ({
         <TextInput
           placeholder={placeholder}
           style={[styles.textInput, style]}
+          value={value}
           multiline={multiline}
+          onChangeText={onChangeText}
+          editable={!disabled}
         />
       </View>
     </View>

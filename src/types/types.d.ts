@@ -20,6 +20,7 @@ export type ButtonProps = {
 export type ProfilePictureProps = {
   width?: number;
   height?: number;
+  imageUri?: string;
 };
 
 export type ReduxUser = {
@@ -37,6 +38,28 @@ export type ImageState = {
   imageUri: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+};
+
+export type User = {
+  username: string;
+  email: string;
+  name?: string;
+  bio?: string;
+  profilePicture?: string;
+  website?: string;
+  phone?: string;
+  gender?: string;
+  images?: string[];
+};
+
+export type ProfileState = {
+  profileData: User | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+};
+
+export type FetchProfileProps = {
+  uid: string;
 };
 export type LoginUser = {
   identifier: string;
@@ -61,4 +84,14 @@ export type ResetPassword = {
 export type LoaderProps = {
   userStatus: string;
   text: string;
+};
+
+export type HorizontalInputProps = {
+  label: string;
+  placeholder: string;
+  style?: ViewStyle | TextStyle;
+  multiline?: boolean;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  disabled?: boolean;
 };

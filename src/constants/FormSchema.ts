@@ -60,3 +60,48 @@ export const submitImageSchema = z.object({
     .string()
     .min(1, {message: 'Please write something about the image'}),
 });
+
+export const userSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, {message: 'UserName must be at least 3 characters long'})
+    .max(20, {message: 'UserName must be at most 20 characters long'}),
+  email: z.string().trim().email({message: 'Invalid email address'}),
+  name: z
+    .string()
+    .trim()
+    .max(30, {message: 'Name must be at most 30 characters long'})
+    .optional(),
+  bio: z
+    .string()
+    .trim()
+    .max(200, {message: 'Bio must be at most 200 characters long'})
+    .optional(),
+  profilePicture: z
+    .string()
+    .url({message: 'Invalid URL for profile picture'})
+    .optional(),
+  website: z
+    .string()
+    .trim()
+    .url({message: 'Invalid URL for website'})
+    .refine(val => !val || !val.includes(' '), {
+      message: 'Website URL cannot contain spaces',
+    })
+    .optional(),
+  phone: z
+    .string()
+    .optional()
+    .transform(val => val?.trim() || undefined)
+    .refine(val => !val || /^[0-9+\- ]{6,20}$/.test(val), {
+      message: 'Invalid phone number',
+    }),
+  gender: z
+    .string()
+    .optional()
+    .transform(val => val?.trim().toLowerCase() || undefined)
+    .refine(val => !val || ['male', 'female', 'other'].includes(val), {
+      message: 'Gender must be one of: male, female, other',
+    }),
+});

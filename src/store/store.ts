@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import authSlice from './slice/authSlice';
 import imageSlice from './slice/uploadImageSlice';
+import profileSlice from './slice/profileSlice';
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     image: imageSlice,
+    profile: profileSlice,
   },
 });
 
