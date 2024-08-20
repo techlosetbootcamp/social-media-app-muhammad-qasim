@@ -46,6 +46,8 @@ export const signupUser = createAsyncThunk(
       await firestore().collection('users').doc(updatedUser.uid).set({
         username: userName,
         email: email,
+        userId: updatedUser.uid,
+        name: userName,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
       return {

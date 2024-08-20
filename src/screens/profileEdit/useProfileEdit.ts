@@ -72,6 +72,7 @@ export const useProfileEdit = (imageUri: string | null) => {
           ...data,
           profilePicture: imageUri || data.profilePicture || '',
         };
+        delete updatedData.images;
         userSchema.parse(updatedData);
         await dispatch(updateProfile(updatedData)).unwrap();
         Toast.show({type: 'success', text1: 'Profile updated successfully'});

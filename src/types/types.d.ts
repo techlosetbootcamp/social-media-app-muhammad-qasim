@@ -58,9 +58,6 @@ export type ProfileState = {
   error: string | null;
 };
 
-export type FetchProfileProps = {
-  uid: string;
-};
 export type LoginUser = {
   identifier: string;
   password: string;
@@ -94,4 +91,30 @@ export type HorizontalInputProps = {
   value?: string;
   onChangeText?: (text: string) => void;
   disabled?: boolean;
+};
+
+export type PostUser = {
+  id: string;
+  email: string;
+  name: string;
+  profilePicture: string;
+  createdAt: string;
+};
+
+export type Image = {
+  imageUrl: string;
+  userId: string;
+  description: string;
+  createdAt: string;
+};
+
+export type Post = {
+  image: Image;
+  user: PostUser;
+};
+
+export type PostsState = {
+  posts: Post[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
 };

@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {FetchProfileProps, ProfileState, User} from '../../types/types';
+import {ProfileState, User} from '../../types/types';
 import storage from '@react-native-firebase/storage';
 
 const initialState: ProfileState = {
@@ -12,38 +12,34 @@ const initialState: ProfileState = {
 
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
-  async (uid: FetchProfileProps | undefined, thunkAPI) => {
+  async (userId: string | undefined, thunkAPI) => {
     try {
-      const user = auth().currentUser;
-      const userId = uid || user;
-
-      if (!userId) {
+      const currentUser = auth().currentUser;
+      const uid = userId || currentUser?.uid;
+      if (!uid) {
         return thunkAPI.rejectWithValue(
-          'No user is currently signed in or provided.',
+          'No user ID provided and no current user is signed in.',
         );
       }
       const userSnapshot = await firestore()
         .collection('users')
-        .where('uid', '==', userId)
+        .where('userId', '==', uid)
         .get();
 
       if (userSnapshot.empty) {
         return thunkAPI.rejectWithValue('No user found with the provided UID.');
       }
-
       const profileData = userSnapshot.docs[0].data();
       const imagesSnapshot = await firestore()
         .collection('images')
-        .where('userId', '==', userId)
+        .where('userId', '==', uid)
         .get();
-
       const images = imagesSnapshot.docs.map(doc => doc.data().imageUrl);
       const {createdAt, ...profileWithoutCreatedAt} = profileData;
       const profileWithImages = {
         ...profileWithoutCreatedAt,
         images,
       } as User;
-
       return profileWithImages;
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -56,6 +52,7 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (data: User, thunkAPI) => {
     try {
+      console.log(data);
       const userName = data.username.trim().toLowerCase().replace(/\s+/g, '_');
       const user = auth().currentUser;
       if (!user) {

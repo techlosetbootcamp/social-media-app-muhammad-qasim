@@ -7,8 +7,18 @@ export const useProfile = () => {
   const profileState = useAppSelector(state => state.profile);
 
   useEffect(() => {
-    dispatch(fetchProfile()).unwrap();
-  }, [dispatch]);
+    if (profileState.status === 'idle') {
+      const fetchProfileData = async () => {
+        try {
+          await dispatch(fetchProfile()).unwrap();
+        } catch (error) {
+          console.error('Failed to fetch profile:', error);
+        }
+      };
+
+      fetchProfileData();
+    }
+  }, [dispatch, profileState.status]);
 
   return {
     profileState,

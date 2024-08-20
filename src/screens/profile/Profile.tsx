@@ -151,12 +151,10 @@ const styles = StyleSheet.create({
   gallerySection: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
   gallery: {
-    width: '33%',
-    height: '100%',
+    width: '33.33%',
+    height: 100,
     aspectRatio: 1,
-    marginVertical: 1,
   },
 });

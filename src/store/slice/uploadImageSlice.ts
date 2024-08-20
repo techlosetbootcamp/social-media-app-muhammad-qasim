@@ -15,8 +15,6 @@ export const uploadImage = createAsyncThunk(
   async ({imageUri, description}: UlpoadImage, {rejectWithValue}) => {
     try {
       const fileExtension = imageUri.split('.').pop() || 'jpg';
-      console.log(fileExtension);
-
       if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
         return rejectWithValue('Unsupported file type');
       }
