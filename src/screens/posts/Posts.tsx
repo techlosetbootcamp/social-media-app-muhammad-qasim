@@ -3,24 +3,34 @@ import React, {useCallback} from 'react';
 import Logo from '../../components/logo/Logo';
 import {Colors} from '../../constants/Colors';
 import ProfilePicture from '../../components/profilePicture/ProfilePicture';
-import {usePost} from './usePost';
+import {usePosts} from './usePosts';
 import LoadingOverlay from '../../components/loading/Loading';
+import {Post} from '../../types/types';
 
-const Post = () => {
-  const {postState} = usePost();
+const Posts = () => {
+  const {
+    postsState,
+    handleEndReached,
+    isInitialLoading,
+    isLoadingMore,
+    isEmpty,
+    isEndOfList,
+    formatDate,
+  } = usePosts();
+
   const renderItem = useCallback(
-    ({item}: {item: any}) => (
+    ({item}: {item: Post}) => (
       <View>
         <View style={styles.userInfo}>
           <View style={styles.profileInfo}>
             <ProfilePicture
               width={32}
               height={32}
-              imageUri={item.user.profilePicture}
+              imageUri={item?.user?.profilePicture}
             />
             <View>
               <View style={styles.nameSection}>
-                <Text style={styles.name}>{item.user.name}</Text>
+                <Text style={styles.name}>{item?.user?.name}</Text>
                 <Image
                   source={require('../../assets/images/verified.png')}
                   style={styles.verifiedIcon}
@@ -34,55 +44,52 @@ const Post = () => {
             style={styles.moreIcon}
           />
         </View>
-        <Image source={{uri: item.image.imageUrl}} style={styles.postImage} />
+        <Image source={{uri: item?.image?.imageUrl}} style={styles.postImage} />
         <View style={styles.postInfo}>
           <Text style={styles.postText}>
-            <Text style={styles.name}>{item.user.name}</Text>{' '}
-            {item.image.description || 'No caption'}
+            <Text style={styles.name}>{item?.user?.name}</Text>{' '}
+            {item?.image?.description || 'No caption'}
           </Text>
-          <Text style={styles.date}>{item.image.createdAt}</Text>
+          <Text style={styles.date}>{formatDate(item?.image?.createdAt)}</Text>
         </View>
       </View>
     ),
     [],
   );
-
-  const handleEndReached = useCallback(() => {}, []);
-
-  const isLoading = postState.status === 'loading';
-  const isEmpty = postState.status === 'idle' && postState.posts.length === 0;
-  const isEndOfList = postState.status === 'idle' && postState.posts.length > 0;
-
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Logo marginBottom={6} marginTop={10} width={105} height={28} />
       </View>
       <FlatList
-        data={postState.posts}
+        data={postsState?.posts}
         renderItem={renderItem}
-        keyExtractor={(item, index) =>
-          item.user.id ? item.user.id.toString() : index.toString()
-        }
+        keyExtractor={item => `${item?.user?.id}-${item?.image?.createdAt}`}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         ListFooterComponent={
-          !isLoading && !isEndOfList ? (
+          isLoadingMore ? (
             <View style={styles.footerContainer}>
-              <Text style={styles.noMorePosts}>No more posts available.</Text>
+              <Text style={styles.footer}>Loading more posts...</Text>
+            </View>
+          ) : isEndOfList ? (
+            <View style={styles.footerContainer}>
+              <Text style={styles.footer}>No more posts available.</Text>
             </View>
           ) : null
         }
         ListEmptyComponent={
-          isLoading ? null : isEmpty ? (
-            <Text style={styles.noMorePosts}>No posts available.</Text>
+          !isInitialLoading && isEmpty ? (
+            <Text style={styles.noPosts}>No posts available.</Text>
           ) : null
         }
       />
-      <LoadingOverlay visible={isLoading} />
+      <LoadingOverlay visible={isInitialLoading} />
     </View>
   );
 };
+
+export default Posts;
 
 const styles = StyleSheet.create({
   container: {
@@ -155,11 +162,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  noMorePosts: {
+  footer: {
     textAlign: 'center',
     fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
     fontSize: 16,
-    color: Colors.darkBlack,
+    color: Colors.lightBlack2,
+  },
+  noPosts: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Roboto-Regular',
+    fontWeight: '400',
+    fontSize: 16,
+    color: Colors.lightBlack2,
   },
   verifiedIcon: {
     width: 9.8,
@@ -169,5 +186,3 @@ const styles = StyleSheet.create({
     width: 14,
   },
 });
-
-export default Post;

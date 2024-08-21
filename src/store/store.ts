@@ -2,14 +2,14 @@ import {configureStore} from '@reduxjs/toolkit';
 import authSlice from './slice/authSlice';
 import imageSlice from './slice/uploadImageSlice';
 import profileSlice from './slice/profileSlice';
-import postsSlice from './slice/postSlice';
+import postsSlice from './slice/postsSlice';
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     image: imageSlice,
     profile: profileSlice,
-    post: postsSlice,
+    posts: postsSlice,
   },
 });
 

@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
     paddingVertical: 45,
   },
   profilePicture: {
-    borderRadius: 100,
     width: 95,
     height: 95,
+    borderRadius: 50,
   },
 });

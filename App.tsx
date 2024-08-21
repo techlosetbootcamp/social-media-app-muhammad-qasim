@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import ForgetPassword from './src/screens/forgetPassword/ForgetPassword';
 import Login from './src/screens/login/Login';
-import Post from './src/screens/post/Post';
+import Posts from './src/screens/posts/Posts';
 import ProfileEdit from './src/screens/profileEdit/ProfileEdit';
 import ResetPassword from './src/screens/resetPassword/ResetPassword';
 import Signup from './src/screens/signup/Signup';
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <Provider store={store}>
       {/* <Profile /> */}
-      <Post />
+      <Posts />
       {/* <ProfileEdit /> */}
       {/* <UploadImage /> */}
       {/* <Login /> */}

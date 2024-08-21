@@ -103,6 +103,9 @@ export const loginUser = createAsyncThunk(
           'Invalid credential. Please try again.',
         );
       }
+      if (error.code === 'auth/wrong-password') {
+        return thunkAPI.rejectWithValue('Wrong password. Please try again.');
+      }
       return thunkAPI.rejectWithValue('An error occurred during login.');
     }
   },

@@ -93,18 +93,18 @@ export type HorizontalInputProps = {
   disabled?: boolean;
 };
 
+export type Image = {
+  imageUrl: string;
+  userId: string;
+  description?: string;
+  createdAt: string;
+};
+
 export type PostUser = {
   id: string;
   email: string;
   name: string;
   profilePicture: string;
-  createdAt: string;
-};
-
-export type Image = {
-  imageUrl: string;
-  userId: string;
-  description: string;
   createdAt: string;
 };
 
@@ -115,6 +115,8 @@ export type Post = {
 
 export type PostsState = {
   posts: Post[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: 'idle' | 'loading' | 'loadingMore' | 'succeeded' | 'failed';
   error: string | null;
+  lastDocumentId: string | null;
+  isEndOfList: boolean;
 };
