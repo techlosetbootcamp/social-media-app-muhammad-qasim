@@ -7,6 +7,7 @@ import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 import {useResetPassword} from './useResetPassword';
 import Loader from '../../components/loader/Loader';
+import auth from '@react-native-firebase/auth';
 
 const ResetPassword = () => {
   const {
@@ -19,11 +20,19 @@ const ResetPassword = () => {
     confirmPassword,
     user,
   } = useResetPassword();
+  const logoutHandler = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('logged out'))
+      .catch(err => console.log(err));
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled">
       <View style={styles.main}>
+        <Button text="logout" onPress={logoutHandler} />
         <Backward />
         <View style={styles.container}>
           <Logo marginBottom={95} marginTop={80} />

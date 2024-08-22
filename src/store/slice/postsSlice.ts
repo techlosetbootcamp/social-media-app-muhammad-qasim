@@ -1,7 +1,13 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {RootState} from '../store';
-import {PostsState, Image, PostUser, Post} from '../../types/types';
+import {
+  PostsState,
+  Image,
+  PostUser,
+  Post,
+  FetchPostsPayload,
+} from '../../types/types';
 
 const initialState: PostsState = {
   posts: [],
@@ -11,12 +17,15 @@ const initialState: PostsState = {
   isEndOfList: false,
 };
 
-export const fetchMorePostsWithImagesAndUsers = createAsyncThunk(
+export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
+  FetchPostsPayload,
+  boolean
+>(
   'posts/fetchMorePostsWithImagesAndUsers',
-  async (_, thunkAPI) => {
+  async (refresh = false, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const lastDocumentId = state?.posts?.lastDocumentId;
+      const lastDocumentId = refresh ? null : state.posts.lastDocumentId;
       let imagesQuery = firestore()
         .collection('images')
         .orderBy('createdAt', 'desc')
@@ -36,6 +45,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk(
           posts: [],
           lastDocumentId: null,
           isEndOfList: true,
+          refresh,
         };
       }
 
@@ -47,46 +57,46 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk(
           description: data?.description,
           createdAt:
             data?.createdAt instanceof firestore.Timestamp
-              ? data?.createdAt?.toDate().toISOString()
+              ? data?.createdAt.toDate().toISOString()
               : new Date(data?.createdAt).toISOString(),
         };
       });
 
       const userIds = Array.from(
-        new Set(imagesData.map(image => image?.userId)),
+        new Set(imagesData.map(image => image.userId)),
       );
-      const userPromises = userIds?.map(userId =>
+      const userPromises = userIds.map(userId =>
         firestore().collection('users').where('userId', '==', userId).get(),
       );
 
       const usersSnapshots = await Promise.all(userPromises);
       const usersData: Record<string, PostUser> = {};
-      usersSnapshots?.forEach(snapshot => {
+      usersSnapshots.forEach(snapshot => {
         snapshot.docs.forEach(doc => {
           const data = doc.data();
-          usersData[data?.userId] = {
-            id: data?.userId,
-            email: data?.email,
-            name: data?.name,
-            profilePicture: data?.profilePicture,
+          usersData[data.userId] = {
+            id: data.userId,
+            email: data.email,
+            name: data.name,
+            profilePicture: data.profilePicture,
             createdAt:
-              data?.createdAt instanceof firestore.Timestamp
-                ? data?.createdAt?.toDate().toISOString()
-                : new Date(data?.createdAt).toISOString(),
+              data.createdAt instanceof firestore.Timestamp
+                ? data.createdAt.toDate().toISOString()
+                : new Date(data.createdAt).toISOString(),
           };
         });
       });
 
-      const postsWithImagesAndUsers: Post[] = imagesData?.map(image => ({
+      const postsWithImagesAndUsers: Post[] = imagesData.map(image => ({
         image,
         user: usersData[image.userId],
       }));
 
       return {
         posts: postsWithImagesAndUsers,
-        lastDocumentId:
-          imagesSnapshot?.docs[imagesSnapshot?.docs?.length - 1]?.id,
-        isEndOfList: imagesSnapshot?.docs?.length < 10,
+        lastDocumentId: imagesSnapshot.docs[imagesSnapshot.docs.length - 1]?.id,
+        isEndOfList: imagesSnapshot.docs.length < 10,
+        refresh,
       };
     } catch (error) {
       console.error('Error fetching more posts:', error);
@@ -106,17 +116,14 @@ const postsSlice = createSlice({
       })
       .addCase(
         fetchMorePostsWithImagesAndUsers.fulfilled,
-        (
-          state,
-          action: PayloadAction<{
-            posts: Post[];
-            lastDocumentId: string | null;
-            isEndOfList: boolean;
-          }>,
-        ) => {
+        (state, action: PayloadAction<FetchPostsPayload>) => {
           state.status = 'succeeded';
           if (action.payload.posts.length > 0) {
-            state.posts = [...state.posts, ...action.payload.posts];
+            if (action.payload.refresh) {
+              state.posts = action.payload.posts;
+            } else {
+              state.posts = [...state.posts, ...action.payload.posts];
+            }
             state.lastDocumentId = action.payload.lastDocumentId;
             state.isEndOfList = action.payload.isEndOfList;
           } else {

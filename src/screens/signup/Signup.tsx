@@ -15,7 +15,7 @@ import {Colors} from '../../constants/Colors';
 import {useSignup} from './useSignup';
 import Loader from '../../components/loader/Loader';
 
-const Signup = () => {
+const Signup = ({navigation}: any) => {
   const {
     setUserName,
     setEmail,
@@ -72,9 +72,12 @@ const Signup = () => {
             <Text style={styles.orText}>OR</Text>
             <View style={styles.line} />
           </View>
-          <Text style={styles.dontHaveAccount}>
-            Already have an account? <Text style={styles.signUp}>Log In.</Text>
-          </Text>
+          <View style={styles.haveAccountContainer}>
+            <Text style={styles.haveAccount}>Already have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.login}> Log In.</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -141,7 +144,12 @@ const styles = StyleSheet.create({
     color: Colors.lightBlack2,
     marginHorizontal: 31,
   },
-  dontHaveAccount: {
+  haveAccountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  haveAccount: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 14,
@@ -149,7 +157,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.lightBlack2,
   },
-  signUp: {
+  login: {
     color: Colors.quaternary,
+    fontSize: 14,
+    lineHeight: 16,
   },
 });

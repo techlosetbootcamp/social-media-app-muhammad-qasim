@@ -24,22 +24,27 @@ export const fetchProfile = createAsyncThunk(
       const userSnapshot = await firestore()
         .collection('users')
         .where('userId', '==', uid)
+        .limit(1)
         .get();
 
       if (userSnapshot.empty) {
         return thunkAPI.rejectWithValue('No user found with the provided UID.');
       }
+
       const profileData = userSnapshot.docs[0].data();
       const imagesSnapshot = await firestore()
         .collection('images')
         .where('userId', '==', uid)
+        .orderBy('createdAt', 'desc')
         .get();
+
       const images = imagesSnapshot.docs.map(doc => doc.data().imageUrl);
       const {createdAt, ...profileWithoutCreatedAt} = profileData;
       const profileWithImages = {
         ...profileWithoutCreatedAt,
         images,
       } as User;
+
       return profileWithImages;
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -52,7 +57,6 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (data: User, thunkAPI) => {
     try {
-      console.log(data);
       const userName = data.username.trim().toLowerCase().replace(/\s+/g, '_');
       const user = auth().currentUser;
       if (!user) {
@@ -85,6 +89,7 @@ export const updateProfile = createAsyncThunk(
         const reference = storage().ref(fileName);
         await reference.putFile(data.profilePicture);
         data.profilePicture = await reference.getDownloadURL();
+        await user.updateProfile({photoURL: data.profilePicture});
       }
 
       await userDocRef.set({...data, username: userName}, {merge: true});

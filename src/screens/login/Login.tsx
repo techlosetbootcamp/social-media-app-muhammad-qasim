@@ -13,24 +13,16 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
 import {useLogin} from './useLogin';
-import auth from '@react-native-firebase/auth';
 import Loader from '../../components/loader/Loader';
 
-const Login = () => {
+const Login = ({navigation}: any) => {
   const {setIdentifier, setPassword, identifier, password, login, user} =
     useLogin();
-  const logoutHandler = () => {
-    auth()
-      .signOut()
-      .then(() => console.log('logged out'))
-      .catch(err => console.log(err));
-  };
 
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled">
-      <Button text="logout" onPress={logoutHandler} />
       <View style={styles.main}>
         <Backward />
         <View style={styles.container}>
@@ -47,7 +39,10 @@ const Login = () => {
               onChangeText={setPassword}
               value={password}
             />
-            <Text style={styles.forgotPassword}>Forgot password?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ForgotPassword')}>
+              <Text style={styles.forgotPassword}>Forgot password?</Text>
+            </TouchableOpacity>
             <Button style={{marginVertical: 30}} onPress={login}>
               <Loader userStatus={user.status} text="Login" />
             </Button>
@@ -64,9 +59,12 @@ const Login = () => {
             <Text style={styles.orText}>OR</Text>
             <View style={styles.line} />
           </View>
-          <Text style={styles.dontHaveAccount}>
-            Don't have an account? <Text style={styles.signUp}>Sign up</Text>
-          </Text>
+          <View style={styles.dontHaveAccountContainer}>
+            <Text style={styles.dontHaveAccount}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.signUp}> Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -142,6 +140,11 @@ const styles = StyleSheet.create({
     color: Colors.lightBlack2,
     marginHorizontal: 31,
   },
+  dontHaveAccountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   dontHaveAccount: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
@@ -152,5 +155,7 @@ const styles = StyleSheet.create({
   },
   signUp: {
     color: Colors.quaternary,
+    fontSize: 14,
+    lineHeight: 16,
   },
 });

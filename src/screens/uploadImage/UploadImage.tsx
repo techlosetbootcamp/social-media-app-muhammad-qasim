@@ -13,14 +13,16 @@ import Button from '../../components/button/Button';
 import {useSubmitImageHandler, useUploadImage} from './useUploadImage';
 import Loader from '../../components/loader/Loader';
 
-const UploadImage = () => {
+const UploadImage = ({navigation}: any) => {
   const {imageUri, setImageUri, handleSelectImage} = useUploadImage();
   const {description, setDescription, submitImageHandler, imageState} =
     useSubmitImageHandler(imageUri, setImageUri);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.cancelButton}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => navigation.goBack()}>
           <Text style={styles.cancelButtonText}>Cancel</Text>
         </TouchableOpacity>
         <View style={styles.headerImage}>

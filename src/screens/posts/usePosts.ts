@@ -1,27 +1,41 @@
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
 import {fetchMorePostsWithImagesAndUsers} from '../../store/slice/postsSlice';
-import {useCallback, useEffect, useMemo} from 'react';
+import {useCallback, useMemo, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const usePosts = () => {
   const dispatch = useAppDispatch();
   const postsState = useAppSelector(state => state.posts);
+  const [refreshing, setRefreshing] = useState(false);
+  useFocusEffect(
+    useCallback(() => {
+      if (postsState?.status === 'idle' && postsState?.posts?.length === 0) {
+        (async () => {
+          try {
+            await dispatch(fetchMorePostsWithImagesAndUsers(false)).unwrap();
+          } catch (error) {
+            console.error('Failed to fetch posts:', error);
+          }
+        })();
+      }
+    }, [dispatch, postsState?.status, postsState?.posts?.length]),
+  );
 
-  useEffect(() => {
-    if (postsState?.status === 'idle' && postsState?.posts?.length === 0) {
-      (async () => {
-        try {
-          await dispatch(fetchMorePostsWithImagesAndUsers()).unwrap();
-        } catch (error) {
-          console.error('Failed to fetch posts:', error);
-        }
-      })();
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchMorePostsWithImagesAndUsers(true)).unwrap();
+    } catch (error) {
+      console.error('Failed to refresh posts:', error);
+    } finally {
+      setRefreshing(false);
     }
-  }, [dispatch, postsState?.status, postsState?.posts?.length]);
+  }, [dispatch]);
 
   const loadMorePosts = useCallback(async () => {
     if (postsState?.status === 'succeeded' && !postsState?.isEndOfList) {
       try {
-        await dispatch(fetchMorePostsWithImagesAndUsers()).unwrap();
+        await dispatch(fetchMorePostsWithImagesAndUsers(false)).unwrap();
       } catch (error) {
         console.error('Failed to load more posts:', error);
       }
@@ -70,5 +84,7 @@ export const usePosts = () => {
     isEmpty,
     isEndOfList,
     formatDate,
+    refreshing,
+    refresh,
   };
 };

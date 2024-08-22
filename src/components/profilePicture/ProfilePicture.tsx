@@ -21,6 +21,6 @@ export default ProfilePicture;
 
 const styles = StyleSheet.create({
   profilePicture: {
-    borderRadius: 100,
+    borderRadius: 50,
   },
 });

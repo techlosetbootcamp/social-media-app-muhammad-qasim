@@ -7,7 +7,7 @@ const LoadingOverlay = ({visible}: {visible: boolean}) => {
     <Modal
       transparent={true}
       visible={visible}
-      animationType="fade"
+      animationType="none"
       onRequestClose={() => {}}>
       <View style={styles.overlay}>
         <View>

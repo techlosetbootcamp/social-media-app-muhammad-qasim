@@ -13,7 +13,7 @@ import HorizontalInput from '../../components/horizontalInput/HorizontalInput';
 import {useProfileEdit, useUploadImage} from './useProfileEdit';
 import LoadingOverlay from '../../components/loading/Loading';
 
-const ProfileEdit = () => {
+const ProfileEdit = ({navigation}: any) => {
   const {imageUri, handleSelectImage} = useUploadImage();
   const {data, profileState, handleSubmit, handleChange} =
     useProfileEdit(imageUri);
@@ -21,7 +21,7 @@ const ProfileEdit = () => {
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.cancelBtn}>Cancel</Text>
         </TouchableOpacity>
         <Text style={styles.editProfileBtn}>Edit Profile</Text>
@@ -101,11 +101,14 @@ const ProfileEdit = () => {
             onChangeText={text => handleChange('gender', text)}
           />
         </View>
-        <View>
-          <Text style={styles.saveChanges}>
-            Want to change your password?{' '}
-            <Text style={{color: Colors.blue}}>Reset Password.</Text>
+        <View style={styles.resetPasswordContainer}>
+          <Text style={styles.changePassword}>
+            Want to change your password?
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ResetPassword')}>
+            <Text style={styles.resetPassword}> Reset Password.</Text>
+          </TouchableOpacity>
         </View>
         <LoadingOverlay visible={profileState.status === 'loading'} />
       </ScrollView>
@@ -179,18 +182,30 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
   },
-  saveChanges: {
+  profilePicture: {
+    width: 95,
+    height: 95,
+    borderRadius: 50,
+  },
+  resetPasswordContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    paddingVertical: 45,
+    paddingHorizontal: 20,
+  },
+  changePassword: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 16,
     color: Colors.lightBlack2,
     textAlign: 'center',
-    paddingVertical: 45,
   },
-  profilePicture: {
-    width: 95,
-    height: 95,
-    borderRadius: 50,
+  resetPassword: {
+    color: Colors.quaternary,
+    fontSize: 14,
+    lineHeight: 16,
   },
 });

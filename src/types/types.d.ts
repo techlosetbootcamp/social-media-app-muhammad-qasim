@@ -20,7 +20,7 @@ export type ButtonProps = {
 export type ProfilePictureProps = {
   width?: number;
   height?: number;
-  imageUri?: string;
+  imageUri?: string | null;
 };
 
 export type ReduxUser = {
@@ -119,4 +119,20 @@ export type PostsState = {
   error: string | null;
   lastDocumentId: string | null;
   isEndOfList: boolean;
+};
+
+export type FetchPostsPayload = {
+  posts: Post[];
+  lastDocumentId: string | null;
+  isEndOfList: boolean;
+  refresh: boolean;
+};
+
+export type UserDescriptionProps = {
+  name: string | undefined;
+  bio: string | undefined;
+};
+
+export type UserNameProps = {
+  username: string | undefined;
 };

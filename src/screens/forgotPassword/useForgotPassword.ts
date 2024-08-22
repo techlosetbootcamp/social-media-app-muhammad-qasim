@@ -5,7 +5,7 @@ import {forgotPasswordSchema} from '../../constants/FormSchema';
 import {z} from 'zod';
 import Toast from 'react-native-toast-message';
 
-export const useForgetPassword = () => {
+export const useForgotPassword = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth);
   const [email, setEmail] = useState('');

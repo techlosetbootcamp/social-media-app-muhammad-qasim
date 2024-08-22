@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useCallback} from 'react';
 import Logo from '../../components/logo/Logo';
 import {Colors} from '../../constants/Colors';
@@ -7,7 +14,7 @@ import {usePosts} from './usePosts';
 import LoadingOverlay from '../../components/loading/Loading';
 import {Post} from '../../types/types';
 
-const Posts = () => {
+const Posts = ({navigation}: {navigation: any}) => {
   const {
     postsState,
     handleEndReached,
@@ -16,29 +23,36 @@ const Posts = () => {
     isEmpty,
     isEndOfList,
     formatDate,
+    refreshing,
+    refresh,
   } = usePosts();
 
   const renderItem = useCallback(
     ({item}: {item: Post}) => (
       <View>
         <View style={styles.userInfo}>
-          <View style={styles.profileInfo}>
-            <ProfilePicture
-              width={32}
-              height={32}
-              imageUri={item?.user?.profilePicture}
-            />
-            <View>
-              <View style={styles.nameSection}>
-                <Text style={styles.name}>{item?.user?.name}</Text>
-                <Image
-                  source={require('../../assets/images/verified.png')}
-                  style={styles.verifiedIcon}
-                />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('OtherUserProfile', {id: item?.user?.id})
+            }>
+            <View style={styles.profileInfo}>
+              <ProfilePicture
+                width={32}
+                height={32}
+                imageUri={item?.user?.profilePicture}
+              />
+              <View>
+                <View style={styles.nameSection}>
+                  <Text style={styles.name}>{item?.user?.name}</Text>
+                  <Image
+                    source={require('../../assets/images/verified.png')}
+                    style={styles.verifiedIcon}
+                  />
+                </View>
+                <Text style={styles.country}>Tokyo, Japan</Text>
               </View>
-              <Text style={styles.country}>Tokyo, Japan</Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <Image
             source={require('../../assets/images/more.png')}
             style={styles.moreIcon}
@@ -54,8 +68,9 @@ const Posts = () => {
         </View>
       </View>
     ),
-    [],
+    [navigation, formatDate],
   );
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -67,6 +82,8 @@ const Posts = () => {
         keyExtractor={item => `${item?.user?.id}-${item?.image?.createdAt}`}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
+        refreshing={refreshing}
+        onRefresh={refresh}
         ListFooterComponent={
           isLoadingMore ? (
             <View style={styles.footerContainer}>
@@ -80,11 +97,14 @@ const Posts = () => {
         }
         ListEmptyComponent={
           !isInitialLoading && isEmpty ? (
-            <Text style={styles.noPosts}>No posts available.</Text>
+            <View style={styles.emptyContainer}>
+              <Text style={styles.noPosts}>No posts available.</Text>
+            </View>
           ) : null
         }
+        contentContainerStyle={styles.flatListContent}
       />
-      <LoadingOverlay visible={isInitialLoading} />
+      <LoadingOverlay visible={postsState?.status === 'loading'} />
     </View>
   );
 };
@@ -92,6 +112,9 @@ const Posts = () => {
 export default Posts;
 
 const styles = StyleSheet.create({
+  flatListContent: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -169,10 +192,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.lightBlack2,
   },
-  noPosts: {
+  emptyContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noPosts: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,

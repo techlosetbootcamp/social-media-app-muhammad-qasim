@@ -5,11 +5,11 @@ import Backward from '../../components/backward/Backward';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {Colors} from '../../constants/Colors';
-import {useForgetPassword} from './useForgetPassword';
+import {useForgotPassword} from './useForgotPassword';
 import Loader from '../../components/loader/Loader';
 
-const ForgetPassword = () => {
-  const {setEmail, forgotPasswordHandler, email, user} = useForgetPassword();
+const ForgotPassword = () => {
+  const {setEmail, forgotPasswordHandler, email, user} = useForgotPassword();
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContent}
@@ -32,7 +32,7 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;
 
 const styles = StyleSheet.create({
   scrollViewContent: {
