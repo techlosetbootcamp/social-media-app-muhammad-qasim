@@ -1,15 +1,16 @@
-import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/auth';
 import {useEffect, useState} from 'react';
-
-type User = FirebaseAuthTypes.User | null;
+import {FirebaseUser} from '../types/types';
 
 const useAuthNavigation = () => {
-  const [currentUser, setCurrentUser] = useState<User>(null);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser>(null);
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user: User) => {
-      setCurrentUser(user);
-    });
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged((user: FirebaseUser) => {
+        setCurrentUser(user);
+      });
     return () => unsubscribe();
   }, []);
   return currentUser;

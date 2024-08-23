@@ -4,6 +4,8 @@ import {resetPassword} from '../../store/slice/authSlice';
 import {resetPasswordSchema} from '../../constants/FormSchema';
 import {z} from 'zod';
 import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
+import {resetStore} from '../../store/slice/resetSlice';
 
 export const useResetPassword = () => {
   const dispatch = useAppDispatch();
@@ -21,10 +23,13 @@ export const useResetPassword = () => {
     try {
       resetPasswordSchema.parse({oldPassword, newPassword, confirmPassword});
       await dispatch(resetPassword({oldPassword, newPassword})).unwrap();
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      Toast.show({type: 'success', text1: 'Password reset successful'});
+      await auth().signOut();
+      dispatch(resetStore());
+      Toast.show({
+        type: 'success',
+        text1: 'Password reset successful',
+        text2: 'Please login with your new password',
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => {
@@ -41,9 +46,6 @@ export const useResetPassword = () => {
     setNewPassword,
     setConfirmPassword,
     resetPasswordHandler,
-    oldPassword,
-    newPassword,
-    confirmPassword,
     user,
   };
 };

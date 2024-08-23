@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import React from 'react';
-import {Colors} from '../../constants/Colors';
+import styles from './ProfileEditStyles';
 import ProfilePicture from '../../components/profilePicture/ProfilePicture';
 import HorizontalInput from '../../components/horizontalInput/HorizontalInput';
 import {useProfileEdit, useUploadImage} from './useProfileEdit';
@@ -71,6 +64,12 @@ const ProfileEdit = ({navigation}: any) => {
             onChangeText={text => handleChange('website', text)}
           />
           <HorizontalInput
+            label="Location"
+            placeholder="Tokyo, Japan"
+            value={data?.location || ''}
+            onChangeText={text => handleChange('location', text)}
+          />
+          <HorizontalInput
             label="Bio"
             placeholder="Bio"
             style={{borderBottomWidth: 0}}
@@ -117,95 +116,3 @@ const ProfileEdit = ({navigation}: any) => {
 };
 
 export default ProfileEdit;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 12,
-    backgroundColor: Colors.grey,
-  },
-  cancelBtn: {
-    fontFamily: 'Roboto-Regular',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 21,
-    color: Colors.darkBlack,
-  },
-  editProfileBtn: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 16,
-    lineHeight: 21,
-    color: Colors.black,
-  },
-  doneBtn: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 16,
-    lineHeight: 21,
-    color: Colors.blue,
-  },
-  profileSection: {
-    alignItems: 'center',
-    paddingTop: 18,
-    paddingBottom: 13,
-  },
-  profile: {
-    alignItems: 'center',
-    gap: 12,
-  },
-  changeProfilePhotoText: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 13,
-    lineHeight: 21,
-    color: Colors.blue,
-  },
-  editSection: {
-    borderTopWidth: 0.5,
-    borderTopColor: Colors.lightGrey,
-    borderStyle: 'solid',
-    borderBottomWidth: 0.5,
-    borderBottomColor: Colors.lightGrey,
-  },
-  privateInformation: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 15,
-    lineHeight: 20,
-    color: Colors.black,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
-  profilePicture: {
-    width: 95,
-    height: 95,
-    borderRadius: 50,
-  },
-  resetPasswordContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    paddingVertical: 45,
-    paddingHorizontal: 20,
-  },
-  changePassword: {
-    fontFamily: 'Roboto-Regular',
-    fontWeight: '400',
-    fontSize: 14,
-    lineHeight: 16,
-    color: Colors.lightBlack2,
-    textAlign: 'center',
-  },
-  resetPassword: {
-    color: Colors.quaternary,
-    fontSize: 14,
-    lineHeight: 16,
-  },
-});

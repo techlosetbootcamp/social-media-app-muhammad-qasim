@@ -34,12 +34,6 @@ export type AuthState = {
   error: string | null;
 };
 
-export type ImageState = {
-  imageUri: string | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-};
-
 export type User = {
   username: string;
   email: string;
@@ -50,6 +44,7 @@ export type User = {
   phone?: string;
   gender?: string;
   images?: string[];
+  location?: string;
 };
 
 export type ProfileState = {
@@ -63,7 +58,7 @@ export type LoginUser = {
   password: string;
 };
 
-export type UlpoadImage = {
+export type UlpoadPost = {
   imageUri: string;
   description: string;
 };
@@ -105,6 +100,7 @@ export type PostUser = {
   email: string;
   name: string;
   profilePicture: string;
+  location?: string;
   createdAt: string;
 };
 
@@ -136,3 +132,5 @@ export type UserDescriptionProps = {
 export type UserNameProps = {
   username: string | undefined;
 };
+
+export type FirebaseUser = FirebaseAuthTypes.User | null;

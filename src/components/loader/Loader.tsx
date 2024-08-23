@@ -1,5 +1,6 @@
-import {Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {Text, ActivityIndicator} from 'react-native';
 import React from 'react';
+import styles from './LoaderStyles';
 import {Colors} from '../../constants/Colors';
 import {LoaderProps} from '../../types/types';
 
@@ -14,14 +15,3 @@ export default function Loader({userStatus, text}: LoaderProps) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  buttonText: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 14,
-    lineHeight: 17,
-    color: Colors.white,
-    textAlign: 'center',
-  },
-});

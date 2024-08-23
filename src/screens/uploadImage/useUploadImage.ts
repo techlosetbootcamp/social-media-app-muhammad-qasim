@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 import {z} from 'zod';
 import {submitImageSchema} from '../../constants/FormSchema';
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
-import {uploadImage, resetImageState} from '../../store/slice/uploadImageSlice';
+import {uploadPost} from '../../store/slice/postsSlice';
 
 export const useUploadImage = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -41,16 +41,15 @@ export const useSubmitImageHandler = (
 ) => {
   const [description, setDescription] = useState('');
   const dispatch = useAppDispatch();
-  const imageState = useAppSelector(state => state.image);
+  const imageState = useAppSelector(state => state.posts);
 
   const submitImageHandler = async () => {
     try {
       submitImageSchema.parse({imageUri, description});
       if (imageUri) {
-        await dispatch(uploadImage({imageUri, description})).unwrap();
+        await dispatch(uploadPost({imageUri, description})).unwrap();
         setDescription('');
         setImageUri(null);
-        dispatch(resetImageState());
         Toast.show({type: 'success', text1: 'Image uploaded successfully'});
       }
     } catch (error: any) {

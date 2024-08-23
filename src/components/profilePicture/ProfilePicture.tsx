@@ -1,6 +1,8 @@
-import {Image, StyleSheet} from 'react-native';
+import {Image} from 'react-native';
 import React from 'react';
 import {ProfilePictureProps} from '../../types/types';
+import styles from './ProfilePictureStyles';
+import {profile} from '../../constants/Images';
 
 const ProfilePicture = ({
   width = 86,
@@ -9,18 +11,10 @@ const ProfilePicture = ({
 }: ProfilePictureProps) => {
   return (
     <Image
-      source={
-        imageUri ? {uri: imageUri} : require('../../assets/images/profile.png')
-      }
+      source={imageUri ? {uri: imageUri} : profile}
       style={[styles.profilePicture, {width, height}]}
     />
   );
 };
 
 export default ProfilePicture;
-
-const styles = StyleSheet.create({
-  profilePicture: {
-    borderRadius: 50,
-  },
-});

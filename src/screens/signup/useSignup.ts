@@ -32,7 +32,11 @@ export const useSignup = () => {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      Toast.show({type: 'success', text1: 'Signup successful'});
+      Toast.show({
+        type: 'success',
+        text1: 'Signup successful',
+        text2: 'Please login with your credentials',
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err =>

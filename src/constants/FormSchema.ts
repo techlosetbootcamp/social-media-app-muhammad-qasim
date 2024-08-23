@@ -90,6 +90,13 @@ export const userSchema = z.object({
       message: 'Website URL cannot contain spaces',
     })
     .optional(),
+  location: z
+    .string()
+    .optional()
+    .transform(val => val?.trim() || undefined)
+    .refine(val => !val || /^[a-zA-Z, ]+$/.test(val), {
+      message: 'Invalid location',
+    }),
   phone: z
     .string()
     .optional()

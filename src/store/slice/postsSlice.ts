@@ -1,12 +1,15 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {RootState} from '../store';
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 import {
   PostsState,
   Image,
   PostUser,
   Post,
   FetchPostsPayload,
+  UlpoadPost,
 } from '../../types/types';
 
 const initialState: PostsState = {
@@ -78,6 +81,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
             id: data.userId,
             email: data.email,
             name: data.name,
+            location: data.location,
             profilePicture: data.profilePicture,
             createdAt:
               data.createdAt instanceof firestore.Timestamp
@@ -86,7 +90,6 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
           };
         });
       });
-
       const postsWithImagesAndUsers: Post[] = imagesData.map(image => ({
         image,
         user: usersData[image.userId],
@@ -101,6 +104,37 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
     } catch (error) {
       console.error('Error fetching more posts:', error);
       return thunkAPI.rejectWithValue('Failed to fetch more posts.');
+    }
+  },
+);
+
+export const uploadPost = createAsyncThunk(
+  'posts/uploadPost',
+  async ({imageUri, description}: UlpoadPost, {rejectWithValue}) => {
+    try {
+      const fileExtension = imageUri.split('.').pop() || 'jpg';
+      if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+        return rejectWithValue('Unsupported file type');
+      }
+      const fileName = `${new Date().toISOString()}.${fileExtension}`;
+      const reference = storage().ref(fileName);
+      await reference.putFile(imageUri);
+      const imageUrl = await reference.getDownloadURL();
+      const user = auth().currentUser;
+      if (!user) {
+        return rejectWithValue('User not authenticated');
+      }
+      await firestore().collection('images').add({
+        imageUrl,
+        description,
+        userId: user.uid,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+
+      return 'Image uploaded successfully';
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      return rejectWithValue('Failed to upload image');
     }
   },
 );
@@ -133,6 +167,20 @@ const postsSlice = createSlice({
         },
       )
       .addCase(fetchMorePostsWithImagesAndUsers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
+      });
+
+    builder
+      .addCase(uploadPost.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(uploadPost.fulfilled, state => {
+        state.status = 'succeeded';
+        state.error = null;
+      })
+      .addCase(uploadPost.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
       });

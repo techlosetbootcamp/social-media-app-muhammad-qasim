@@ -1,29 +1,28 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  Image,
-} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {View, FlatList, TouchableOpacity, Text, Image} from 'react-native';
+import styles from './ProfileStyles';
 import ProfilePicture from '../../components/profilePicture/ProfilePicture';
-import {useProfile} from './useProfile';
+import {useLogoutHandler, useProfile} from './useProfile';
 import LoadingOverlay from '../../components/loading/Loading';
 import UserName from '../../components/userName/UserName';
 import UserDescription from '../../components/userDescription/UserDescription';
 import Grid from '../../components/grid/Grid';
+import {logout} from '../../constants/Images';
 
 const Profile = ({navigation}: any) => {
   const {profileState} = useProfile();
-
+  const {logoutHandler} = useLogoutHandler();
   const renderGalleryItem = ({item}: {item: string}) => (
     <Image key={item} source={{uri: item}} style={styles.galleryImage} />
   );
 
   const renderHeader = () => (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={logoutHandler}>
+          <Image source={logout} style={styles.logout} />
+        </TouchableOpacity>
+      </View>
       <UserName username={profileState.profileData?.username} />
       <View style={styles.profileContainer}>
         <View style={styles.profileOutline}>
@@ -64,61 +63,3 @@ const Profile = ({navigation}: any) => {
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  flatListContent: {
-    flexGrow: 1,
-  },
-  container: {
-    backgroundColor: Colors.white,
-  },
-  profileContainer: {
-    alignItems: 'center',
-    marginHorizontal: 16,
-    marginBottom: 12,
-  },
-  profileOutline: {
-    borderWidth: 1,
-    borderColor: Colors.lightGrey,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5,
-    width: 96,
-    height: 96,
-    marginBottom: 14,
-  },
-  editProfile: {
-    borderWidth: 1,
-    borderColor: Colors.lightGrey2,
-    borderRadius: 6,
-    paddingVertical: 6,
-    width: '100%',
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  editProfileText: {
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: 13,
-    lineHeight: 18,
-    color: Colors.darkBlack,
-  },
-  galleryImage: {
-    width: '33.33%',
-    height: 100,
-    aspectRatio: 1,
-    margin: 0.5,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontFamily: 'Roboto-Regular',
-    fontWeight: '400',
-    fontSize: 16,
-    color: Colors.lightBlack2,
-  },
-});

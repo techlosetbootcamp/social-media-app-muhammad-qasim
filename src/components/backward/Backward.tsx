@@ -1,18 +1,13 @@
 import React from 'react';
 import {Image, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useBackward} from './useBackward';
+import {back} from '../../constants/Images';
 
 const Backward = () => {
-  const navigation = useNavigation();
-
-  const handleBack = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  };
+  const {handleBack} = useBackward();
   return (
     <TouchableOpacity onPress={handleBack}>
-      <Image source={require('../../assets/images/back.png')} />
+      <Image source={back} />
     </TouchableOpacity>
   );
 };

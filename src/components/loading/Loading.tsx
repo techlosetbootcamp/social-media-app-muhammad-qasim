@@ -1,5 +1,6 @@
 import React from 'react';
-import {Modal, View, ActivityIndicator, StyleSheet} from 'react-native';
+import {Modal, View, ActivityIndicator} from 'react-native';
+import styles from './LoadingStyles';
 import {Colors} from '../../constants/Colors';
 
 const LoadingOverlay = ({visible}: {visible: boolean}) => {
@@ -17,14 +18,5 @@ const LoadingOverlay = ({visible}: {visible: boolean}) => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-});
 
 export default LoadingOverlay;

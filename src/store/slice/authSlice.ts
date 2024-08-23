@@ -111,17 +111,6 @@ export const loginUser = createAsyncThunk(
   },
 );
 
-export const logoutUser = createAsyncThunk(
-  'auth/logout',
-  async (_, thunkAPI) => {
-    try {
-      await auth().signOut();
-    } catch (error) {
-      return thunkAPI.rejectWithValue((error as Error).message);
-    }
-  },
-);
-
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email: string, thunkAPI) => {
@@ -165,8 +154,13 @@ export const resetPassword = createAsyncThunk(
       await user.updatePassword(newPassword);
       return 'Password has been updated.';
     } catch (error: any) {
+      if (error.code === 'auth/wrong-password') {
+        return thunkAPI.rejectWithValue('Wrong password. Please try again.');
+      }
       if (error.code === 'auth/invalid-credential') {
-        return thunkAPI.rejectWithValue('The old password is incorrect.');
+        return thunkAPI.rejectWithValue(
+          'Invalid credential. Please try again.',
+        );
       }
       return thunkAPI.rejectWithValue(
         'An error occurred during password reset.',
@@ -178,13 +172,7 @@ export const resetPassword = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    clearDetails(state) {
-      state.user = null;
-      state.status = 'idle';
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(signupUser.pending, state => {
@@ -206,17 +194,6 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload as string;
-      })
-      .addCase(logoutUser.pending, state => {
-        state.status = 'loading';
-      })
-      .addCase(logoutUser.fulfilled, state => {
-        state.status = 'idle';
-        state.user = null;
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
       })
@@ -245,5 +222,4 @@ const authSlice = createSlice({
   },
 });
 
-export const {clearDetails} = authSlice.actions;
 export default authSlice.reducer;

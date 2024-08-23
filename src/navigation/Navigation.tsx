@@ -15,6 +15,7 @@ import ProfilePicture from '../components/profilePicture/ProfilePicture';
 import {Colors} from '../constants/Colors';
 import AuthNavigation from './AuthNavigation';
 import OtherUserProfile from '../screens/otherUserProfile/OtherUserProfile';
+import {home, uploadPage} from '../constants/Images';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -81,9 +82,9 @@ function BottomTabNavigator() {
           let iconName;
 
           if (route.name === 'Posts') {
-            iconName = require('../assets/images/home.png');
+            iconName = home;
           } else if (route.name === 'UploadImage') {
-            iconName = require('../assets/images/uploadPage.png');
+            iconName = uploadPage;
           }
 
           return (
