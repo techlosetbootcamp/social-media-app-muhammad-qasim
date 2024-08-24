@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import store from './src/store/store';
 import Toast from 'react-native-toast-message';
 import Navigation from './src/navigation/Navigation';
+import {NavigationContainer} from '@react-navigation/native';
 
 const App = () => {
   useEffect(() => {
@@ -12,7 +13,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Navigation />
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
       <Toast />
     </Provider>
   );

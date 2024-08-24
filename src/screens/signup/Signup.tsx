@@ -8,8 +8,10 @@ import styles from './SignupStyles';
 import {useSignup} from './useSignup';
 import Loader from '../../components/loader/Loader';
 import {googleIcon} from '../../constants/Images';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const Signup = ({navigation}: any) => {
+const Signup = () => {
+  const navigation = useTypeNavigation();
   const {
     setUserName,
     setEmail,

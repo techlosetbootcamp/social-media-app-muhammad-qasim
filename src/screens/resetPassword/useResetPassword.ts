@@ -25,6 +25,9 @@ export const useResetPassword = () => {
       await dispatch(resetPassword({oldPassword, newPassword})).unwrap();
       await auth().signOut();
       dispatch(resetStore());
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
       Toast.show({
         type: 'success',
         text1: 'Password reset successful',
@@ -46,6 +49,9 @@ export const useResetPassword = () => {
     setNewPassword,
     setConfirmPassword,
     resetPasswordHandler,
+    oldPassword,
+    newPassword,
+    confirmPassword,
     user,
   };
 };

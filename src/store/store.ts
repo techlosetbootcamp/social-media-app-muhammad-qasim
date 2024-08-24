@@ -1,4 +1,4 @@
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import {configureStore, combineReducers, PayloadAction} from '@reduxjs/toolkit';
 import authSlice from './slice/authSlice';
 import profileSlice from './slice/profileSlice';
 import postsSlice from './slice/postsSlice';
@@ -9,7 +9,12 @@ const appReducer = combineReducers({
   posts: postsSlice,
 });
 
-const rootReducer = (state: any, action: any) => {
+export type RootState = ReturnType<typeof appReducer>;
+
+const rootReducer = (
+  state: RootState | undefined,
+  action: PayloadAction,
+): RootState => {
   if (action.type === 'reset/resetStore') {
     state = undefined;
   }
@@ -20,7 +25,6 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;

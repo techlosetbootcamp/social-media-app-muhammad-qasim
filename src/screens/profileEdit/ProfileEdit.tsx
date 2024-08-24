@@ -5,8 +5,10 @@ import ProfilePicture from '../../components/profilePicture/ProfilePicture';
 import HorizontalInput from '../../components/horizontalInput/HorizontalInput';
 import {useProfileEdit, useUploadImage} from './useProfileEdit';
 import LoadingOverlay from '../../components/loading/Loading';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const ProfileEdit = ({navigation}: any) => {
+const ProfileEdit = () => {
+  const navigation = useTypeNavigation();
   const {imageUri, handleSelectImage} = useUploadImage();
   const {data, profileState, handleSubmit, handleChange} =
     useProfileEdit(imageUri);

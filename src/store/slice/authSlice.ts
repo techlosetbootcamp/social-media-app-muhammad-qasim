@@ -50,11 +50,7 @@ export const signupUser = createAsyncThunk(
         name: userName,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
-      return {
-        uid: updatedUser?.uid,
-        email: updatedUser?.email,
-        displayName: updatedUser?.displayName,
-      };
+      return 'User created successfully';
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         return rejectWithValue('Email address is already in use.');
@@ -144,12 +140,10 @@ export const resetPassword = createAsyncThunk(
       if (!user) {
         return thunkAPI.rejectWithValue('No user is currently signed in.');
       }
-
       const credential = auth.EmailAuthProvider.credential(
         user.email!,
         oldPassword,
       );
-
       await user.reauthenticateWithCredential(credential);
       await user.updatePassword(newPassword);
       return 'Password has been updated.';
@@ -180,7 +174,7 @@ const authSlice = createSlice({
       })
       .addCase(signupUser.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.user = action.payload;
+        state.error = null;
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.status = 'failed';

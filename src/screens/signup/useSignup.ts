@@ -4,9 +4,11 @@ import {signupUser} from '../../store/slice/authSlice';
 import {signUpSchema} from '../../constants/FormSchema';
 import {z} from 'zod';
 import Toast from 'react-native-toast-message';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 export const useSignup = () => {
   const dispatch = useAppDispatch();
+  const navigation = useTypeNavigation();
   const user = useAppSelector(state => state.auth);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -37,6 +39,7 @@ export const useSignup = () => {
         text1: 'Signup successful',
         text2: 'Please login with your credentials',
       });
+      navigation.navigate('Login');
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err =>

@@ -102,7 +102,6 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
         refresh,
       };
     } catch (error) {
-      console.error('Error fetching more posts:', error);
       return thunkAPI.rejectWithValue('Failed to fetch more posts.');
     }
   },
@@ -132,8 +131,7 @@ export const uploadPost = createAsyncThunk(
       });
 
       return 'Image uploaded successfully';
-    } catch (error: any) {
-      console.error('Error uploading image:', error);
+    } catch (error) {
       return rejectWithValue('Failed to upload image');
     }
   },

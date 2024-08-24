@@ -14,6 +14,9 @@ const ResetPassword = () => {
     setNewPassword,
     setConfirmPassword,
     resetPasswordHandler,
+    oldPassword,
+    newPassword,
+    confirmPassword,
     user,
   } = useResetPassword();
 
@@ -29,16 +32,19 @@ const ResetPassword = () => {
             placeholder="Old Password"
             secureTextEntry={true}
             onChangeText={setOldPassword}
+            value={oldPassword}
           />
           <Input
             placeholder="New Password"
             secureTextEntry={true}
             onChangeText={setNewPassword}
+            value={newPassword}
           />
           <Input
             placeholder="Confirm Password"
             secureTextEntry={true}
             onChangeText={setConfirmPassword}
+            value={confirmPassword}
           />
           <Button style={{marginVertical: 40}} onPress={resetPasswordHandler}>
             <Loader userStatus={user.status} text="Reset Password" />

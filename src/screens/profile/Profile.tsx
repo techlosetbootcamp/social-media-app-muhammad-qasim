@@ -8,8 +8,10 @@ import UserName from '../../components/userName/UserName';
 import UserDescription from '../../components/userDescription/UserDescription';
 import Grid from '../../components/grid/Grid';
 import {logout} from '../../constants/Images';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const Profile = ({navigation}: any) => {
+const Profile = () => {
+  const navigation = useTypeNavigation();
   const {profileState} = useProfile();
   const {logoutHandler} = useLogoutHandler();
   const renderGalleryItem = ({item}: {item: string}) => (

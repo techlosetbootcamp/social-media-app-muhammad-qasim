@@ -7,8 +7,10 @@ import {usePosts} from './usePosts';
 import LoadingOverlay from '../../components/loading/Loading';
 import {Post} from '../../types/types';
 import {more, verified} from '../../constants/Images';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const Posts = ({navigation}: {navigation: any}) => {
+const Posts = () => {
+  const navigation = useTypeNavigation();
   const {
     postsState,
     handleEndReached,

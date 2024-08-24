@@ -16,7 +16,10 @@ export const useProfile = () => {
         try {
           await dispatch(fetchProfile()).unwrap();
         } catch (error) {
-          console.error('Failed to fetch profile:', error);
+          Toast.show({
+            type: 'error',
+            text1: error as string,
+          });
         }
       };
 
@@ -37,7 +40,6 @@ export const useLogoutHandler = () => {
       dispatch(resetStore());
       Toast.show({type: 'success', text1: 'Logout successful'});
     } catch (error) {
-      console.error('Failed to logout:', error);
       Toast.show({
         type: 'error',
         text1: 'Logout failed',

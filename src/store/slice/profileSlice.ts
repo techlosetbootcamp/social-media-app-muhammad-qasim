@@ -47,7 +47,6 @@ export const fetchProfile = createAsyncThunk(
 
       return profileWithImages;
     } catch (error) {
-      console.error('Error fetching profile:', error);
       return thunkAPI.rejectWithValue('Failed to fetch profile.');
     }
   },
@@ -91,12 +90,10 @@ export const updateProfile = createAsyncThunk(
         data.profilePicture = await reference.getDownloadURL();
         await user.updateProfile({photoURL: data.profilePicture});
       }
-
       await userDocRef.set({...data, username: userName}, {merge: true});
 
       return data;
     } catch (error) {
-      console.error('Error updating profile:', error);
       return thunkAPI.rejectWithValue('Failed to update profile.');
     }
   },

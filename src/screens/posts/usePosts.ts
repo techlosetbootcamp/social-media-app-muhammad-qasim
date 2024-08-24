@@ -2,6 +2,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
 import {fetchMorePostsWithImagesAndUsers} from '../../store/slice/postsSlice';
 import {useCallback, useMemo, useState} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const usePosts = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ export const usePosts = () => {
           try {
             await dispatch(fetchMorePostsWithImagesAndUsers(false)).unwrap();
           } catch (error) {
-            console.error('Failed to fetch posts:', error);
+            Toast.show({type: 'error', text1: error as string});
           }
         })();
       }
@@ -26,7 +27,7 @@ export const usePosts = () => {
     try {
       await dispatch(fetchMorePostsWithImagesAndUsers(true)).unwrap();
     } catch (error) {
-      console.error('Failed to refresh posts:', error);
+      Toast.show({type: 'error', text1: error as string});
     } finally {
       setRefreshing(false);
     }
@@ -37,7 +38,7 @@ export const usePosts = () => {
       try {
         await dispatch(fetchMorePostsWithImagesAndUsers(false)).unwrap();
       } catch (error) {
-        console.error('Failed to load more posts:', error);
+        Toast.show({type: 'error', text1: error as string});
       }
     }
   }, [dispatch, postsState?.status, postsState?.isEndOfList]);

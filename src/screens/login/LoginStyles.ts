@@ -20,9 +20,11 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
   },
+  touchableArea: {
+    alignSelf: 'flex-end',
+  },
   forgotPassword: {
     marginTop: 6,
-    textAlign: 'right',
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 12,

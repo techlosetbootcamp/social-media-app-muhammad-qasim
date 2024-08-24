@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../screens/login/Login';
 import Signup from '../screens/signup/Signup';
@@ -13,46 +12,15 @@ import UploadImage from '../screens/uploadImage/UploadImage';
 import {Image, View} from 'react-native';
 import ProfilePicture from '../components/profilePicture/ProfilePicture';
 import {Colors} from '../constants/Colors';
-import AuthNavigation from './AuthNavigation';
 import OtherUserProfile from '../screens/otherUserProfile/OtherUserProfile';
 import {home, uploadPage} from '../constants/Images';
+import useAuthNavigation from './AuthNavigation';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export default function Navigation() {
-  const userData = AuthNavigation();
-  const isAuthenticated =
-    userData && userData?.displayName && userData?.email && userData?.uid;
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        {isAuthenticated ? (
-          <>
-            <Stack.Screen name="Home" component={BottomTabNavigator} />
-            <Stack.Screen
-              name="OtherUserProfile"
-              component={OtherUserProfile}
-            />
-            <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
-            <Stack.Screen name="ResetPassword" component={ResetPassword} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Signup" component={Signup} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
 function BottomTabNavigator() {
-  const userData = AuthNavigation();
-
+  const currentUser = useAuthNavigation();
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -73,20 +41,17 @@ function BottomTabNavigator() {
                 <ProfilePicture
                   width={24}
                   height={24}
-                  imageUri={userData?.photoURL}
+                  imageUri={currentUser?.photoURL}
                 />
               </View>
             );
           }
-
           let iconName;
-
           if (route.name === 'Posts') {
             iconName = home;
           } else if (route.name === 'UploadImage') {
             iconName = uploadPage;
           }
-
           return (
             <Image
               source={iconName}
@@ -108,5 +73,32 @@ function BottomTabNavigator() {
       <Tab.Screen name="UploadImage" component={UploadImage} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
+  );
+}
+
+export default function Navigation() {
+  const currentUser = useAuthNavigation();
+  const isAuthenticated =
+    currentUser &&
+    currentUser?.displayName &&
+    currentUser?.email &&
+    currentUser?.uid;
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Home" component={BottomTabNavigator} />
+          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} />
+          <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        </>
+      )}
+    </Stack.Navigator>
   );
 }

@@ -6,8 +6,10 @@ import Button from '../../components/button/Button';
 import {useSubmitImageHandler, useUploadImage} from './useUploadImage';
 import Loader from '../../components/loader/Loader';
 import {select, upload} from '../../constants/Images';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const UploadImage = ({navigation}: any) => {
+const UploadImage = () => {
+  const navigation = useTypeNavigation();
   const {imageUri, setImageUri, handleSelectImage} = useUploadImage();
   const {description, setDescription, submitImageHandler, imageState} =
     useSubmitImageHandler(imageUri, setImageUri);

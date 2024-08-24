@@ -134,3 +134,15 @@ export type UserNameProps = {
 };
 
 export type FirebaseUser = FirebaseAuthTypes.User | null;
+
+export type NavigatorTypes = {
+  Login: undefined;
+  Signup: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
+  Profile: undefined;
+  ProfileEdit: undefined;
+  Posts: undefined;
+  UploadImage: undefined;
+  OtherUserProfile: {id: string};
+};

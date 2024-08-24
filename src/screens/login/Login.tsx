@@ -8,8 +8,10 @@ import styles from './LoginStyles';
 import {useLogin} from './useLogin';
 import Loader from '../../components/loader/Loader';
 import {googleIcon} from '../../constants/Images';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-const Login = ({navigation}: any) => {
+const Login = () => {
+  const navigation = useTypeNavigation();
   const {setIdentifier, setPassword, identifier, password, login, user} =
     useLogin();
 
@@ -34,7 +36,8 @@ const Login = ({navigation}: any) => {
               value={password}
             />
             <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPassword')}>
+              onPress={() => navigation.navigate('ForgotPassword')}
+              style={styles.touchableArea}>
               <Text style={styles.forgotPassword}>Forgot password?</Text>
             </TouchableOpacity>
             <Button style={{marginVertical: 30}} onPress={login}>

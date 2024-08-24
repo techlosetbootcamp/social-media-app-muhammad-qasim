@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 export const useBackward = () => {
-  const navigation = useNavigation();
+  const navigation = useTypeNavigation();
   const handleBack = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();

@@ -52,7 +52,7 @@ export const useSubmitImageHandler = (
         setImageUri(null);
         Toast.show({type: 'success', text1: 'Image uploaded successfully'});
       }
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => {
           Toast.show({type: 'error', text1: err.message});
@@ -60,7 +60,7 @@ export const useSubmitImageHandler = (
       } else {
         Toast.show({
           type: 'error',
-          text1: error || 'An error occurred',
+          text1: (error as string) || 'An error occurred',
         });
       }
     }

@@ -7,9 +7,11 @@ import UserName from '../../components/userName/UserName';
 import UserDescription from '../../components/userDescription/UserDescription';
 import Grid from '../../components/grid/Grid';
 import {useOtherUserProfile} from './useOtherUserProfile';
+import {useRoute} from '@react-navigation/native';
 
-const OtherUserProfile = ({route, navigation}: any) => {
-  const {id} = route.params;
+const OtherUserProfile = () => {
+  const route = useRoute();
+  const {id} = route.params as {id: string};
   const {profileState} = useOtherUserProfile({userId: id});
 
   const renderGalleryItem = ({item}: {item: string}) => (
