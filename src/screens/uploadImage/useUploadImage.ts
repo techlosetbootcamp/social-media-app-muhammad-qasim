@@ -1,8 +1,7 @@
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useState} from 'react';
 import Toast from 'react-native-toast-message';
-import {z} from 'zod';
-import {submitImageSchema} from '../../constants/FormSchema';
+import {validateSubmitImageData} from '../../constants/FormSchema';
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
 import {uploadPost} from '../../store/slice/postsSlice';
 
@@ -44,8 +43,14 @@ export const useSubmitImageHandler = (
   const imageState = useAppSelector(state => state.posts);
 
   const submitImageHandler = async () => {
+    const errors = validateSubmitImageData({imageUri, description});
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(err =>
+        Toast.show({type: 'error', text1: err}),
+      );
+      return;
+    }
     try {
-      submitImageSchema.parse({imageUri, description});
       if (imageUri) {
         await dispatch(uploadPost({imageUri, description})).unwrap();
         setDescription('');
@@ -53,16 +58,10 @@ export const useSubmitImageHandler = (
         Toast.show({type: 'success', text1: 'Image uploaded successfully'});
       }
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach(err => {
-          Toast.show({type: 'error', text1: err.message});
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: (error as string) || 'An error occurred',
-        });
-      }
+      Toast.show({
+        type: 'error',
+        text1: (error as string) || 'An error occurred',
+      });
     }
   };
 

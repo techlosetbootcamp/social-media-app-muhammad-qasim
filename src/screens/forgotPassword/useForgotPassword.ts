@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {forgotPassword} from '../../store/slice/authSlice';
-import {forgotPasswordSchema} from '../../constants/FormSchema';
-import {z} from 'zod';
+import {validateForgotPasswordData} from '../../constants/FormSchema';
 import Toast from 'react-native-toast-message';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
@@ -13,8 +12,14 @@ export const useForgotPassword = () => {
   const [email, setEmail] = useState('');
 
   const forgotPasswordHandler = async () => {
+    const errors = validateForgotPasswordData({email});
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(err =>
+        Toast.show({type: 'error', text1: err}),
+      );
+      return;
+    }
     try {
-      forgotPasswordSchema.parse({email});
       await dispatch(forgotPassword(email)).unwrap();
       setEmail('');
       Toast.show({
@@ -24,13 +29,7 @@ export const useForgotPassword = () => {
       });
       navigation.navigate('Login');
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach(err => {
-          Toast.show({type: 'error', text1: err.message});
-        });
-      } else {
-        Toast.show({type: 'error', text1: error as string});
-      }
+      Toast.show({type: 'error', text1: (error as string) || 'Error occurred'});
     }
   };
 

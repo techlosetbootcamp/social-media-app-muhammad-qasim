@@ -16,52 +16,58 @@ const Login = () => {
     useLogin();
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollViewContent}
-      keyboardShouldPersistTaps="handled">
-      <View style={styles.main}>
+    <View style={styles.wrapper}>
+      <View style={styles.header}>
         <Backward />
-        <View style={styles.container}>
-          <Logo marginBottom={39} marginTop={80} />
-          <View style={styles.formContainer}>
-            <Input
-              placeholder="Email/Username"
-              onChangeText={setIdentifier}
-              value={identifier}
-            />
-            <Input
-              placeholder="Password"
-              secureTextEntry={true}
-              onChangeText={setPassword}
-              value={password}
-            />
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPassword')}
-              style={styles.touchableArea}>
-              <Text style={styles.forgotPassword}>Forgot password?</Text>
-            </TouchableOpacity>
-            <Button style={{marginVertical: 30}} onPress={login}>
-              <Loader userStatus={user.status} text="Login" />
-            </Button>
-            <TouchableOpacity style={styles.loginWithGoogle}>
-              <Image source={googleIcon} style={styles.googleIcon} />
-              <Text style={styles.loginWithGoogleText}>Login with Google</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.orContainer}>
-            <View style={styles.line} />
-            <Text style={styles.orText}>OR</Text>
-            <View style={styles.line} />
-          </View>
-          <View style={styles.dontHaveAccountContainer}>
-            <Text style={styles.dontHaveAccount}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.signUp}> Sign up</Text>
-            </TouchableOpacity>
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.main}>
+          <View style={styles.container}>
+            <Logo marginBottom={39} marginTop={80} />
+            <View style={styles.formContainer}>
+              <Input
+                placeholder="Email/Username"
+                onChangeText={setIdentifier}
+                value={identifier}
+              />
+              <Input
+                placeholder="Password"
+                secureTextEntry={true}
+                onChangeText={setPassword}
+                value={password}
+              />
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ForgotPassword')}
+                style={styles.touchableArea}>
+                <Text style={styles.forgotPassword}>Forgot password?</Text>
+              </TouchableOpacity>
+              <Button style={{marginVertical: 30}} onPress={login}>
+                <Loader userStatus={user.status} text="Login" />
+              </Button>
+              <TouchableOpacity style={styles.loginWithGoogle}>
+                <Image source={googleIcon} style={styles.googleIcon} />
+                <Text style={styles.loginWithGoogleText}>
+                  Login with Google
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.orContainer}>
+              <View style={styles.line} />
+              <Text style={styles.orText}>OR</Text>
+              <View style={styles.line} />
+            </View>
+            <View style={styles.dontHaveAccountContainer}>
+              <Text style={styles.dontHaveAccount}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <Text style={styles.signUp}> Sign up</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

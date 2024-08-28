@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {loginUser} from '../../store/slice/authSlice';
-import {loginSchema} from '../../constants/FormSchema';
-import {z} from 'zod';
+import {validateLoginData} from '../../constants/FormSchema';
 import Toast from 'react-native-toast-message';
 
 export const useLogin = () => {
@@ -12,20 +11,20 @@ export const useLogin = () => {
   const [password, setPassword] = useState('');
 
   const login = async () => {
+    const errors = validateLoginData({identifier, password});
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(err =>
+        Toast.show({type: 'error', text1: err}),
+      );
+      return;
+    }
     try {
-      loginSchema.parse({identifier, password});
       await dispatch(loginUser({identifier, password})).unwrap();
       setIdentifier('');
       setPassword('');
       Toast.show({type: 'success', text1: 'Login successful'});
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach(err =>
-          Toast.show({type: 'error', text1: err.message}),
-        );
-      } else {
-        Toast.show({type: 'error', text1: error as string});
-      }
+      Toast.show({type: 'error', text1: (error as string) || 'Login failed'});
     }
   };
 

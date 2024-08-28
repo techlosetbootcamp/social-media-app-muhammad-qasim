@@ -146,3 +146,42 @@ export type NavigatorTypes = {
   UploadImage: undefined;
   OtherUserProfile: {id: string};
 };
+
+export type SignUpData = {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export type LoginData = {
+  identifier: string;
+  password: string;
+};
+
+export type ForgotPasswordData = {
+  email: string;
+};
+
+export type ResetPasswordData = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type SubmitImageData = {
+  imageUri: string | null;
+  description: string;
+};
+
+export type UserData = {
+  username: string;
+  email: string;
+  name?: string;
+  bio?: string;
+  profilePicture?: string;
+  website?: string;
+  location?: string;
+  phone?: string;
+  gender?: string;
+};

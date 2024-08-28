@@ -1,114 +1,138 @@
-import {z} from 'zod';
+import {
+  ForgotPasswordData,
+  LoginData,
+  ResetPasswordData,
+  SignUpData,
+  SubmitImageData,
+  UserData,
+} from '../types/types';
 
-export const signUpSchema = z.object({
-  userName: z
-    .string()
-    .trim()
-    .min(3, {message: 'UserName must be at least 3 characters long'})
-    .max(20, {message: 'UserName must be at most 20 characters long'}),
-  email: z.string().trim().email({message: 'Invalid email address'}),
-  password: z
-    .string()
-    .min(6, {message: 'Password must be at least 6 characters long'}),
-  confirmPassword: z.string().min(1, {message: 'Please confirm your password'}),
-});
+export const validateSignUpData = (data: SignUpData) => {
+  const errors: {[key: string]: string} = {};
+  if (!data.userName.trim()) {
+    errors.userName = 'UserName is required';
+  } else if (data.userName.length < 3) {
+    errors.userName = 'UserName must be at least 3 characters long';
+  } else if (data.userName.length > 20) {
+    errors.userName = 'UserName must be at most 20 characters long';
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.email.trim())) {
+    errors.email = 'Invalid email address';
+  }
+  if (data.password.length < 6) {
+    errors.password = 'Password must be at least 6 characters long';
+  }
+  if (!data.confirmPassword) {
+    errors.confirmPassword = 'Please confirm your password';
+  } else if (data.confirmPassword !== data.password) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
 
-export const loginSchema = z.object({
-  identifier: z
-    .string()
-    .trim()
-    .min(3, {message: 'Must be at least 3 characters long'})
-    .max(50, {message: 'Must be at most 50 characters long'})
-    .refine(
-      value => {
-        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        const isUsername = /^[a-zA-Z0-9_ \-!@#$%^&*()+=~`|,.<>?]+$/.test(value);
-        return isEmail || isUsername;
-      },
-      {
-        message: 'Must be a valid email or username',
-      },
-    ),
-  password: z
-    .string()
-    .min(6, {message: 'Password must be at least 6 characters long'}),
-});
+  return errors;
+};
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().trim().email({message: 'Invalid email address'}),
-});
+export const validateLoginData = (data: LoginData) => {
+  const errors: {[key: string]: string} = {};
+  const identifier = data.identifier.trim();
+  if (identifier.length < 3) {
+    errors.identifier = 'Email/Username must be at least 3 characters long';
+  } else if (identifier.length > 50) {
+    errors.identifier = 'Email/Username must be at most 50 characters long';
+  } else {
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+    const isUsername = /^[a-zA-Z0-9_ \-!@#$%^&*()+=~`|,.<>?]+$/.test(
+      identifier,
+    );
+    if (!isEmail && !isUsername) {
+      errors.identifier = 'Must be a valid email or username';
+    }
+  }
+  if (data.password.length < 6) {
+    errors.password = 'Password must be at least 6 characters long';
+  }
 
-export const resetPasswordSchema = z.object({
-  oldPassword: z
-    .string()
-    .min(6, {message: 'Password must be at least 6 characters long'}),
-  newPassword: z
-    .string()
-    .min(6, {message: 'Password must be at least 6 characters long'}),
-  confirmPassword: z
-    .string()
-    .min(6, {message: 'Password must be at least 6 characters long'}),
-});
+  return errors;
+};
 
-export const submitImageSchema = z.object({
-  imageUri: z
-    .string()
-    .min(1, {message: 'Please select an image'})
-    .nullable()
-    .refine(value => value !== null, {message: 'Please select an image'}),
-  description: z
-    .string()
-    .min(1, {message: 'Please write something about the image'}),
-});
+export const validateForgotPasswordData = (data: ForgotPasswordData) => {
+  const errors: {[key: string]: string} = {};
+  const email = data.email.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    errors.email = 'Invalid email address';
+  }
+  return errors;
+};
 
-export const userSchema = z.object({
-  username: z
-    .string()
-    .trim()
-    .min(3, {message: 'UserName must be at least 3 characters long'})
-    .max(20, {message: 'UserName must be at most 20 characters long'}),
-  email: z.string().trim().email({message: 'Invalid email address'}),
-  name: z
-    .string()
-    .trim()
-    .max(30, {message: 'Name must be at most 30 characters long'})
-    .optional(),
-  bio: z
-    .string()
-    .trim()
-    .max(200, {message: 'Bio must be at most 200 characters long'})
-    .optional(),
-  profilePicture: z
-    .string()
-    .url({message: 'Invalid URL for profile picture'})
-    .optional(),
-  website: z
-    .string()
-    .trim()
-    .url({message: 'Invalid URL for website'})
-    .refine(val => !val || !val.includes(' '), {
-      message: 'Website URL cannot contain spaces',
-    })
-    .optional(),
-  location: z
-    .string()
-    .optional()
-    .transform(val => val?.trim() || undefined)
-    .refine(val => !val || /^[a-zA-Z, ]+$/.test(val), {
-      message: 'Invalid location',
-    }),
-  phone: z
-    .string()
-    .optional()
-    .transform(val => val?.trim() || undefined)
-    .refine(val => !val || /^[0-9+\- ]{6,20}$/.test(val), {
-      message: 'Invalid phone number',
-    }),
-  gender: z
-    .string()
-    .optional()
-    .transform(val => val?.trim().toLowerCase() || undefined)
-    .refine(val => !val || ['male', 'female', 'other'].includes(val), {
-      message: 'Gender must be one of: male, female, other',
-    }),
-});
+export const validateResetPasswordData = (data: ResetPasswordData) => {
+  const errors: {[key: string]: string} = {};
+  if (data.oldPassword.length < 6) {
+    errors.oldPassword = 'Password must be at least 6 characters long';
+  }
+  if (data.newPassword.length < 6) {
+    errors.newPassword = 'Password must be at least 6 characters long';
+  }
+  if (data.confirmPassword.length < 6) {
+    errors.confirmPassword = 'Password must be at least 6 characters long';
+  }
+  if (data.newPassword !== data.confirmPassword) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
+
+  return errors;
+};
+
+export const validateSubmitImageData = (data: SubmitImageData) => {
+  const errors: {[key: string]: string} = {};
+  if (!data.imageUri || data.imageUri.trim() === '') {
+    errors.imageUri = 'Please select an image';
+  }
+  if (data.description.trim().length < 1) {
+    errors.description = 'Please write something about the image';
+  }
+  return errors;
+};
+
+export const validateUserData = (data: UserData) => {
+  const errors: {[key: string]: string} = {};
+  if (!data.username || data.username.trim().length < 3) {
+    errors.username = 'UserName must be at least 3 characters long';
+  } else if (data.username.trim().length > 20) {
+    errors.username = 'UserName must be at most 20 characters long';
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.email.trim())) {
+    errors.email = 'Invalid email address';
+  }
+  if (data.name && data.name.trim().length > 30) {
+    errors.name = 'Name must be at most 30 characters long';
+  }
+  if (data.bio && data.bio.trim().length > 200) {
+    errors.bio = 'Bio must be at most 200 characters long';
+  }
+  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+  if (data.profilePicture && !urlRegex.test(data.profilePicture.trim())) {
+    errors.profilePicture = 'Invalid URL for profile picture';
+  }
+  if (data.website) {
+    const trimmedWebsite = data.website.trim();
+    if (!urlRegex.test(trimmedWebsite) || trimmedWebsite.includes(' ')) {
+      errors.website = 'Invalid URL for website';
+    }
+  }
+  if (data.location && !/^[a-zA-Z, ]+$/.test(data.location.trim())) {
+    errors.location = 'Invalid location';
+  }
+  if (data.phone && !/^[0-9+\- ]{6,20}$/.test(data.phone.trim())) {
+    errors.phone = 'Invalid phone number';
+  }
+  if (data.gender) {
+    const validGenders = ['male', 'female', 'other'];
+    const normalizedGender = data.gender.trim().toLowerCase();
+    if (!validGenders.includes(normalizedGender)) {
+      errors.gender = 'Gender must be one of: male, female, other';
+    }
+  }
+  return errors;
+};

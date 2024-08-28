@@ -25,6 +25,7 @@ function BottomTabNavigator() {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
+        animation: 'slide_from_right',
         tabBarIcon: ({focused}) => {
           if (route.name === 'Profile') {
             return (
@@ -84,7 +85,8 @@ export default function Navigation() {
     currentUser?.email &&
     currentUser?.uid;
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Home" component={BottomTabNavigator} />

@@ -26,54 +26,64 @@ const Signup = () => {
   } = useSignup();
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollViewContent}
-      keyboardShouldPersistTaps="handled">
-      <View style={styles.main}>
+    <View style={styles.wrapper}>
+      <View style={styles.header}>
         <Backward />
-        <View style={styles.container}>
-          <Logo marginBottom={39} marginTop={80} />
-          <View style={styles.formContainer}>
-            <Input
-              placeholder="Username"
-              onChangeText={setUserName}
-              value={userName}
-            />
-            <Input placeholder="Email" onChangeText={setEmail} value={email} />
-            <Input
-              placeholder="Password"
-              secureTextEntry={true}
-              onChangeText={setPassword}
-              value={password}
-            />
-            <Input
-              placeholder="Confirm Password"
-              secureTextEntry={true}
-              onChangeText={setConfirmPassword}
-              value={confirmPassword}
-            />
-            <Button style={{marginVertical: 28}} onPress={handleSignup}>
-              <Loader userStatus={user.status} text="Signup" />
-            </Button>
-            <TouchableOpacity style={styles.loginWithGoogle}>
-              <Image source={googleIcon} style={styles.googleIcon} />
-              <Text style={styles.loginWithGoogleText}>Signup with Google</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.orContainer}>
-            <View style={styles.line} />
-            <Text style={styles.orText}>OR</Text>
-            <View style={styles.line} />
-          </View>
-          <View style={styles.haveAccountContainer}>
-            <Text style={styles.haveAccount}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.login}> Log In.</Text>
-            </TouchableOpacity>
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.main}>
+          <View style={styles.container}>
+            <Logo marginBottom={39} marginTop={80} />
+            <View style={styles.formContainer}>
+              <Input
+                placeholder="Username"
+                onChangeText={setUserName}
+                value={userName}
+              />
+              <Input
+                placeholder="Email"
+                onChangeText={setEmail}
+                value={email}
+              />
+              <Input
+                placeholder="Password"
+                secureTextEntry={true}
+                onChangeText={setPassword}
+                value={password}
+              />
+              <Input
+                placeholder="Confirm Password"
+                secureTextEntry={true}
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+              />
+              <Button style={{marginVertical: 28}} onPress={handleSignup}>
+                <Loader userStatus={user.status} text="Signup" />
+              </Button>
+              <TouchableOpacity style={styles.loginWithGoogle}>
+                <Image source={googleIcon} style={styles.googleIcon} />
+                <Text style={styles.loginWithGoogleText}>
+                  Signup with Google
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.orContainer}>
+              <View style={styles.line} />
+              <Text style={styles.orText}>OR</Text>
+              <View style={styles.line} />
+            </View>
+            <View style={styles.haveAccountContainer}>
+              <Text style={styles.haveAccount}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.login}> Log In.</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

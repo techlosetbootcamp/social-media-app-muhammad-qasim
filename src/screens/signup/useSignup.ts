@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {signupUser} from '../../store/slice/authSlice';
-import {signUpSchema} from '../../constants/FormSchema';
-import {z} from 'zod';
+import {validateSignUpData} from '../../constants/FormSchema';
 import Toast from 'react-native-toast-message';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
@@ -20,9 +19,19 @@ export const useSignup = () => {
       Toast.show({type: 'error', text1: 'Passwords do not match'});
       return;
     }
-
+    const errors = validateSignUpData({
+      userName,
+      email,
+      password,
+      confirmPassword,
+    });
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(err =>
+        Toast.show({type: 'error', text1: err}),
+      );
+      return;
+    }
     try {
-      signUpSchema.parse({userName, email, password, confirmPassword});
       await dispatch(
         signupUser({
           userName: userName,
@@ -41,13 +50,7 @@ export const useSignup = () => {
       });
       navigation.navigate('Login');
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach(err =>
-          Toast.show({type: 'error', text1: err.message}),
-        );
-      } else {
-        Toast.show({type: 'error', text1: error as string});
-      }
+      Toast.show({type: 'error', text1: error as string});
     }
   };
 

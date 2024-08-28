@@ -2,8 +2,7 @@ import {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
 import {fetchProfile, updateProfile} from '../../store/slice/profileSlice';
 import Toast from 'react-native-toast-message';
-import {z} from 'zod';
-import {userSchema} from '../../constants/FormSchema';
+import {validateUserData} from '../../constants/FormSchema';
 import {User} from '../../types/types';
 import {launchImageLibrary} from 'react-native-image-picker';
 
@@ -67,23 +66,26 @@ export const useProfileEdit = (imageUri: string | null) => {
 
   const handleSubmit = async () => {
     if (data) {
+      const updatedData: User = {
+        ...data,
+        profilePicture: imageUri || data.profilePicture || '',
+      };
+      delete updatedData.images;
+      const error = validateUserData(updatedData);
+      if (Object.keys(error).length > 0) {
+        Object.values(error).forEach(err =>
+          Toast.show({type: 'error', text1: err}),
+        );
+        return;
+      }
       try {
-        const updatedData: User = {
-          ...data,
-          profilePicture: imageUri || data.profilePicture || '',
-        };
-        delete updatedData.images;
-        userSchema.parse(updatedData);
         await dispatch(updateProfile(updatedData)).unwrap();
         Toast.show({type: 'success', text1: 'Profile updated successfully'});
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          error.errors.forEach(err => {
-            Toast.show({type: 'error', text1: err.message});
-          });
-        } else {
-          Toast.show({type: 'error', text1: error as string});
-        }
+        Toast.show({
+          type: 'error',
+          text1: (error as string) || 'Failed to update profile',
+        });
       }
     }
   };

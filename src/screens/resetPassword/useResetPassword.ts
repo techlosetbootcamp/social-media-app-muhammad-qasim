@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {resetPassword} from '../../store/slice/authSlice';
-import {resetPasswordSchema} from '../../constants/FormSchema';
-import {z} from 'zod';
+import {validateResetPasswordData} from '../../constants/FormSchema';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import {resetStore} from '../../store/slice/resetSlice';
@@ -15,13 +14,18 @@ export const useResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const resetPasswordHandler = async () => {
-    if (newPassword !== confirmPassword) {
-      Toast.show({type: 'error', text1: 'Passwords do not match'});
+    const errors = validateResetPasswordData({
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    });
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(err =>
+        Toast.show({type: 'error', text1: err}),
+      );
       return;
     }
-
     try {
-      resetPasswordSchema.parse({oldPassword, newPassword, confirmPassword});
       await dispatch(resetPassword({oldPassword, newPassword})).unwrap();
       await auth().signOut();
       dispatch(resetStore());
@@ -34,13 +38,10 @@ export const useResetPassword = () => {
         text2: 'Please login with your new password',
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach(err => {
-          Toast.show({type: 'error', text1: err.message});
-        });
-      } else {
-        Toast.show({type: 'error', text1: error as string});
-      }
+      Toast.show({
+        type: 'error',
+        text1: (error as string) || 'Something went wrong',
+      });
     }
   };
 
