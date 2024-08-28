@@ -28,7 +28,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
   async (refresh = false, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const lastDocumentId = refresh ? null : state.posts.lastDocumentId;
+      const lastDocumentId = refresh ? null : state?.posts?.lastDocumentId;
       let imagesQuery = firestore()
         .collection('images')
         .orderBy('createdAt', 'desc')
@@ -39,10 +39,10 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
           .collection('images')
           .doc(lastDocumentId)
           .get();
-        imagesQuery = imagesQuery.startAfter(lastDocumentSnapshot);
+        imagesQuery = imagesQuery?.startAfter(lastDocumentSnapshot);
       }
 
-      const imagesSnapshot = await imagesQuery.get();
+      const imagesSnapshot = await imagesQuery?.get();
       if (imagesSnapshot.empty) {
         return {
           posts: [],
@@ -66,38 +66,39 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
       });
 
       const userIds = Array.from(
-        new Set(imagesData.map(image => image.userId)),
+        new Set(imagesData.map(image => image?.userId)),
       );
-      const userPromises = userIds.map(userId =>
+      const userPromises = userIds?.map(userId =>
         firestore().collection('users').where('userId', '==', userId).get(),
       );
 
       const usersSnapshots = await Promise.all(userPromises);
       const usersData: Record<string, PostUser> = {};
-      usersSnapshots.forEach(snapshot => {
-        snapshot.docs.forEach(doc => {
-          const data = doc.data();
+      usersSnapshots?.forEach(snapshot => {
+        snapshot.docs?.forEach(doc => {
+          const data = doc?.data();
           usersData[data.userId] = {
-            id: data.userId,
-            email: data.email,
-            name: data.name,
-            location: data.location,
-            profilePicture: data.profilePicture,
+            id: data?.userId,
+            email: data?.email,
+            name: data?.name,
+            location: data?.location,
+            profilePicture: data?.profilePicture,
             createdAt:
-              data.createdAt instanceof firestore.Timestamp
-                ? data.createdAt.toDate().toISOString()
-                : new Date(data.createdAt).toISOString(),
+              data?.createdAt instanceof firestore.Timestamp
+                ? data?.createdAt?.toDate().toISOString()
+                : new Date(data?.createdAt).toISOString(),
           };
         });
       });
-      const postsWithImagesAndUsers: Post[] = imagesData.map(image => ({
+      const postsWithImagesAndUsers: Post[] = imagesData?.map(image => ({
         image,
         user: usersData[image.userId],
       }));
 
       return {
         posts: postsWithImagesAndUsers,
-        lastDocumentId: imagesSnapshot.docs[imagesSnapshot.docs.length - 1]?.id,
+        lastDocumentId:
+          imagesSnapshot?.docs[imagesSnapshot?.docs?.length - 1]?.id,
         isEndOfList: imagesSnapshot.docs.length < 10,
         refresh,
       };
@@ -111,14 +112,14 @@ export const uploadPost = createAsyncThunk(
   'posts/uploadPost',
   async ({imageUri, description}: UlpoadPost, {rejectWithValue}) => {
     try {
-      const fileExtension = imageUri.split('.').pop() || 'jpg';
+      const fileExtension = imageUri?.split('.').pop() || 'jpg';
       if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
         return rejectWithValue('Unsupported file type');
       }
       const fileName = `${new Date().toISOString()}.${fileExtension}`;
       const reference = storage().ref(fileName);
-      await reference.putFile(imageUri);
-      const imageUrl = await reference.getDownloadURL();
+      await reference?.putFile(imageUri);
+      const imageUrl = await reference?.getDownloadURL();
       const user = auth().currentUser;
       if (!user) {
         return rejectWithValue('User not authenticated');
@@ -126,7 +127,7 @@ export const uploadPost = createAsyncThunk(
       await firestore().collection('images').add({
         imageUrl,
         description,
-        userId: user.uid,
+        userId: user?.uid,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
@@ -144,20 +145,20 @@ const postsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchMorePostsWithImagesAndUsers.pending, state => {
-        state.status = state.posts.length === 0 ? 'loading' : 'loadingMore';
+        state.status = state?.posts?.length === 0 ? 'loading' : 'loadingMore';
       })
       .addCase(
         fetchMorePostsWithImagesAndUsers.fulfilled,
         (state, action: PayloadAction<FetchPostsPayload>) => {
           state.status = 'succeeded';
-          if (action.payload.posts.length > 0) {
+          if (action.payload?.posts?.length > 0) {
             if (action.payload.refresh) {
-              state.posts = action.payload.posts;
+              state.posts = action?.payload?.posts;
             } else {
-              state.posts = [...state.posts, ...action.payload.posts];
+              state.posts = [...state?.posts, ...action?.payload?.posts];
             }
-            state.lastDocumentId = action.payload.lastDocumentId;
-            state.isEndOfList = action.payload.isEndOfList;
+            state.lastDocumentId = action?.payload?.lastDocumentId;
+            state.isEndOfList = action?.payload?.isEndOfList;
           } else {
             state.isEndOfList = true;
           }

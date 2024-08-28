@@ -20,10 +20,12 @@ const OtherUserProfile = () => {
 
   const renderHeader = () => (
     <View style={styles.headerContainer}>
-      <UserName username={profileState.profileData?.username} />
+      <UserName username={profileState?.profileData?.username} />
       <View style={styles.profileContainer}>
         <View style={styles.profileOutline}>
-          <ProfilePicture imageUri={profileState.profileData?.profilePicture} />
+          <ProfilePicture
+            imageUri={profileState?.profileData?.profilePicture}
+          />
         </View>
         <UserDescription
           name={profileState?.profileData?.name}
@@ -46,7 +48,7 @@ const OtherUserProfile = () => {
         </View>
       }
       ListFooterComponent={
-        <LoadingOverlay visible={profileState.status === 'loading'} />
+        <LoadingOverlay visible={profileState?.status === 'loading'} />
       }
       numColumns={3}
       contentContainerStyle={styles.flatListContent}

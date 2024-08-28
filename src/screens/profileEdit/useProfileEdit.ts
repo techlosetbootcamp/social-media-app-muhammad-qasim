@@ -19,8 +19,8 @@ export const useUploadImage = () => {
       if (result.didCancel) {
         Toast.show({type: 'error', text1: 'Image selection cancelled'});
         return;
-      } else if (result.assets && result.assets.length > 0) {
-        const imageUri = result.assets[0].uri;
+      } else if (result?.assets && result?.assets?.length > 0) {
+        const imageUri = result?.assets[0]?.uri;
         setImageUri(imageUri as string);
         Toast.show({type: 'success', text1: 'Image selected successfully'});
       } else {
@@ -41,16 +41,16 @@ export const useProfileEdit = (imageUri: string | null) => {
   const [data, setData] = useState<User | null>(null);
 
   useEffect(() => {
-    if (!profileState.profileData) {
+    if (!profileState?.profileData) {
       dispatch(fetchProfile());
     }
-  }, [dispatch, profileState.profileData]);
+  }, [dispatch, profileState?.profileData]);
 
   useEffect(() => {
-    if (profileState.profileData) {
-      setData(profileState.profileData);
+    if (profileState?.profileData) {
+      setData(profileState?.profileData);
     }
-  }, [profileState.profileData]);
+  }, [profileState?.profileData]);
 
   const handleChange = (field: keyof User, value: string) => {
     setData(prevData => {
@@ -68,7 +68,7 @@ export const useProfileEdit = (imageUri: string | null) => {
     if (data) {
       const updatedData: User = {
         ...data,
-        profilePicture: imageUri || data.profilePicture || '',
+        profilePicture: imageUri || data?.profilePicture || '',
       };
       delete updatedData.images;
       const error = validateUserData(updatedData);

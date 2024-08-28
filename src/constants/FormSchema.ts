@@ -111,13 +111,21 @@ export const validateUserData = (data: UserData) => {
   if (data.bio && data.bio.trim().length > 200) {
     errors.bio = 'Bio must be at most 200 characters long';
   }
-  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-  if (data.profilePicture && !urlRegex.test(data.profilePicture.trim())) {
+  const isValidUrl = (url: string) => {
+    return (
+      url.startsWith('http://') ||
+      url.startsWith('https://') ||
+      url.startsWith('file://')
+    );
+  };
+
+  if (data.profilePicture && !isValidUrl(data.profilePicture.trim())) {
     errors.profilePicture = 'Invalid URL for profile picture';
   }
+
   if (data.website) {
     const trimmedWebsite = data.website.trim();
-    if (!urlRegex.test(trimmedWebsite) || trimmedWebsite.includes(' ')) {
+    if (!isValidUrl(trimmedWebsite) || trimmedWebsite.includes(' ')) {
       errors.website = 'Invalid URL for website';
     }
   }

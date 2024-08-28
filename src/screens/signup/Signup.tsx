@@ -60,7 +60,7 @@ const Signup = () => {
                 value={confirmPassword}
               />
               <Button style={{marginVertical: 28}} onPress={handleSignup}>
-                <Loader userStatus={user.status} text="Signup" />
+                <Loader userStatus={user?.status} text="Signup" />
               </Button>
               <TouchableOpacity style={styles.loginWithGoogle}>
                 <Image source={googleIcon} style={styles.googleIcon} />

@@ -18,8 +18,11 @@ export const signupUser = createAsyncThunk(
   'auth/signup',
   async (data: SignupUser, {rejectWithValue}) => {
     try {
-      const userName = data.userName.trim().toLowerCase().replace(/\s+/g, '_');
-      const email = data.email.trim().toLowerCase();
+      const userName = data?.userName
+        ?.trim()
+        .toLowerCase()
+        .replace(/\s+/g, '_');
+      const email = data?.email?.trim().toLowerCase();
       const userNameSnapshot = await firestore()
         .collection('users')
         .where('username', '==', userName)
@@ -30,20 +33,20 @@ export const signupUser = createAsyncThunk(
       }
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
-        data.password,
+        data?.password,
       );
-      const user = userCredential.user;
+      const user = userCredential?.user;
       if (!user) {
         return rejectWithValue('User creation failed.');
       }
-      await user.updateProfile({
+      await user?.updateProfile({
         displayName: userName,
       });
       const updatedUser = auth().currentUser;
-      if (!updatedUser || updatedUser.uid !== user.uid) {
+      if (!updatedUser || updatedUser?.uid !== user?.uid) {
         return rejectWithValue('Failed to retrieve the updated user.');
       }
-      await firestore().collection('users').doc(updatedUser.uid).set({
+      await firestore().collection('users').doc(updatedUser?.uid).set({
         username: userName,
         email: email,
         userId: updatedUser.uid,
@@ -64,12 +67,12 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (data: LoginUser, thunkAPI) => {
     try {
-      let identifier = data.identifier.trim().toLowerCase();
-      if (!identifier.includes('@')) {
-        identifier = identifier.replace(/\s+/g, '_');
+      let identifier = data?.identifier?.trim().toLowerCase();
+      if (!identifier?.includes('@')) {
+        identifier = identifier?.replace(/\s+/g, '_');
       }
       let email = identifier;
-      if (!email.includes('@')) {
+      if (!email?.includes('@')) {
         const userSnapshot = await firestore()
           .collection('users')
           .where('username', '==', email)
@@ -79,7 +82,7 @@ export const loginUser = createAsyncThunk(
             'No user found with the provided username.',
           );
         }
-        email = userSnapshot.docs[0].data().email;
+        email = userSnapshot?.docs[0]?.data()?.email;
         if (!email) {
           return thunkAPI.rejectWithValue('Failed to retrieve the user email.');
         }
@@ -89,11 +92,14 @@ export const loginUser = createAsyncThunk(
         data.password,
       );
       return {
-        uid: userCredential.user?.uid,
-        email: userCredential.user?.email,
-        displayName: userCredential.user?.displayName,
+        uid: userCredential?.user?.uid,
+        email: userCredential?.user?.email,
+        displayName: userCredential?.user?.displayName,
       };
     } catch (error: any) {
+      if (error.code === 'auth/user-not-found') {
+        return thunkAPI.rejectWithValue('User not found. Please try again.');
+      }
       if (error.code === 'auth/invalid-credential') {
         return thunkAPI.rejectWithValue(
           'Invalid credential. Please try again.',
@@ -111,7 +117,7 @@ export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email: string, thunkAPI) => {
     try {
-      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedEmail = email?.trim().toLowerCase();
       const userSnapshot = await firestore()
         .collection('users')
         .where('email', '==', normalizedEmail)
@@ -141,7 +147,7 @@ export const resetPassword = createAsyncThunk(
         return thunkAPI.rejectWithValue('No user is currently signed in.');
       }
       const credential = auth.EmailAuthProvider.credential(
-        user.email!,
+        user?.email!,
         oldPassword,
       );
       await user.reauthenticateWithCredential(credential);

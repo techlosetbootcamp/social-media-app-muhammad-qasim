@@ -111,7 +111,7 @@ const ProfileEdit = () => {
             <Text style={styles.resetPassword}> Reset Password.</Text>
           </TouchableOpacity>
         </View>
-        <LoadingOverlay visible={profileState.status === 'loading'} />
+        <LoadingOverlay visible={profileState?.status === 'loading'} />
       </ScrollView>
     </>
   );

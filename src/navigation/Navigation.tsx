@@ -27,7 +27,7 @@ function BottomTabNavigator() {
         headerShown: false,
         animation: 'slide_from_right',
         tabBarIcon: ({focused}) => {
-          if (route.name === 'Profile') {
+          if (route?.name === 'Profile') {
             return (
               <View
                 style={{
@@ -48,9 +48,9 @@ function BottomTabNavigator() {
             );
           }
           let iconName;
-          if (route.name === 'Posts') {
+          if (route?.name === 'Posts') {
             iconName = home;
-          } else if (route.name === 'UploadImage') {
+          } else if (route?.name === 'UploadImage') {
             iconName = uploadPage;
           }
           return (
@@ -67,7 +67,7 @@ function BottomTabNavigator() {
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 50,
-          display: route.name === 'UploadImage' ? 'none' : 'flex',
+          display: route?.name === 'UploadImage' ? 'none' : 'flex',
         },
       })}>
       <Tab.Screen name="Posts" component={Posts} />

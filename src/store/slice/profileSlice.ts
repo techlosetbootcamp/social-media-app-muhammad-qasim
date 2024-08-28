@@ -31,14 +31,14 @@ export const fetchProfile = createAsyncThunk(
         return thunkAPI.rejectWithValue('No user found with the provided UID.');
       }
 
-      const profileData = userSnapshot.docs[0].data();
+      const profileData = userSnapshot?.docs[0]?.data();
       const imagesSnapshot = await firestore()
         .collection('images')
         .where('userId', '==', uid)
         .orderBy('createdAt', 'desc')
         .get();
 
-      const images = imagesSnapshot.docs.map(doc => doc.data().imageUrl);
+      const images = imagesSnapshot?.docs?.map(doc => doc?.data()?.imageUrl);
       const {createdAt, ...profileWithoutCreatedAt} = profileData;
       const profileWithImages = {
         ...profileWithoutCreatedAt,
@@ -56,15 +56,18 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (data: User, thunkAPI) => {
     try {
-      const userName = data.username.trim().toLowerCase().replace(/\s+/g, '_');
+      const userName = data?.username
+        ?.trim()
+        .toLowerCase()
+        .replace(/\s+/g, '_');
       const user = auth().currentUser;
       if (!user) {
         return thunkAPI.rejectWithValue('No user is currently signed in.');
       }
 
       const userDocRef = firestore().collection('users').doc(user.uid);
-      const userDoc = await userDocRef.get();
-      if (!userDoc.exists) {
+      const userDoc = await userDocRef?.get();
+      if (!userDoc?.exists) {
         return thunkAPI.rejectWithValue('User does not exist.');
       }
       const existingUserByUsername = await firestore()
@@ -73,22 +76,25 @@ export const updateProfile = createAsyncThunk(
         .get();
 
       if (
-        !existingUserByUsername.empty &&
-        existingUserByUsername.docs[0].id !== user.uid
+        !existingUserByUsername?.empty &&
+        existingUserByUsername?.docs[0]?.id !== user?.uid
       ) {
         return thunkAPI.rejectWithValue('Username already exists.');
       }
 
-      if (data.profilePicture && !data.profilePicture.startsWith('https://')) {
-        const fileExtension = data.profilePicture.split('.').pop() || 'jpg';
+      if (
+        data?.profilePicture &&
+        !data?.profilePicture.startsWith('https://')
+      ) {
+        const fileExtension = data?.profilePicture?.split('.').pop() || 'jpg';
         if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
           return thunkAPI.rejectWithValue('Unsupported file type');
         }
         const fileName = `${new Date().toISOString()}.${fileExtension}`;
         const reference = storage().ref(fileName);
-        await reference.putFile(data.profilePicture);
+        await reference.putFile(data?.profilePicture);
         data.profilePicture = await reference.getDownloadURL();
-        await user.updateProfile({photoURL: data.profilePicture});
+        await user?.updateProfile({photoURL: data?.profilePicture});
       }
       await userDocRef.set({...data, username: userName}, {merge: true});
 

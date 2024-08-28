@@ -18,8 +18,8 @@ export const useUploadImage = () => {
       if (result.didCancel) {
         Toast.show({type: 'error', text1: 'Image selection cancelled'});
         return;
-      } else if (result.assets && result.assets.length > 0) {
-        const imageUri = result.assets[0].uri;
+      } else if (result?.assets && result?.assets?.length > 0) {
+        const imageUri = result?.assets[0]?.uri;
         setImageUri(imageUri as string);
         Toast.show({type: 'success', text1: 'Image selected successfully'});
       } else {

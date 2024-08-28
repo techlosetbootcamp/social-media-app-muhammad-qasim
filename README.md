@@ -1,79 +1,115 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Social Media App
 
-# Getting Started
+Welcome to the Social Media App! This application provides a platform for users to connect, share, and interact with each other through posts and profiles.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Table of Contents
 
-## Step 1: Start the Metro Server
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Features
 
-To start Metro, run the following command from the _root_ of your React Native project:
+1. **Splash Screen**
 
-```bash
-# using npm
-npm start
+   - Display a visually appealing splash screen when the application is launched.
 
-# OR using Yarn
-yarn start
-```
+2. **Login**
 
-## Step 2: Start your Application
+   - Secure login mechanism with email/username and password.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+3. **Signup**
 
-### For Android
+   - Users can create a new account with a name and valid email address.
 
-```bash
-# using npm
-npm run android
+4. **Forgot Password**
 
-# OR using Yarn
-yarn android
-```
+   - Enable users to request a password reset via email using Firebase.
 
-### For iOS
+5. **Reset Password**
 
-```bash
-# using npm
-npm run ios
+   - Allow users to change their password.
 
-# OR using Yarn
-yarn ios
-```
+6. **Home Screen**
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+   - Display a feed of posts from all users with infinite scrolling for uninterrupted browsing.
+   - Option to view a person's profile by clicking on their profile picture.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+7. **Create Post**
 
-## Step 3: Modifying your App
+   - User-friendly interface for creating and publishing new posts.
 
-Now that you have successfully run the app, let's modify it.
+8. **Profile Screen (Own Profile)**
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+   - Display user's profile information, including username, profile picture, bio, and post history.
+   - Allow users to edit their profile information.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+9. **Profile Screen (Other User Profile)**
 
-## Congratulations! :tada:
+   - View profiles of other users including their username, profile picture, bio, and post history.
 
-You've successfully run and modified your React Native App. :partying_face:
+10. **Edit Profile**
+    - Dedicated screen for users to edit their profile information, including updating their profile picture and bio.
+    - Implement proper validation for profile edits.
 
-### Now what?
+## Tech Stack
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+- **React Native CLI** - Framework for building native apps using React.
+- **TypeScript** - Strongly typed programming language for better development experience.
+- **Redux Toolkit** - State management tool for efficient state management.
+- **Firebase Client SDK** - For authentication and password reset functionalities.
 
-# Troubleshooting
+## Installation
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+1. **Clone the repository:**
 
-# Learn More
+   ```bash
+   git clone https://github.com/techlosetbootcamp/social-media-app-muhammad-qasim.git
 
-To learn more about React Native, take a look at the following resources:
+   ```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+2. **Navigate to the project directory:**
+   ```bash
+   cd social-media-app-muhammad-qasim-main
+   ```
+3. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+4. **Configure Firebase:**
+
+   - Set up Firebase project and add configuration to the app.
+
+5. **Run the application:**
+
+   ```bash
+   npm start
+   ```
+
+   - Alternatively, you can use `npm run android` or `npm run ios` to run on specific platforms.
+
+## Usage
+
+- **Splash Screen:** See the splash screen when launching the app.
+- **Login/Signup:** Access the login and signup screens for authentication.
+- **Home Screen:** Browse through posts and view user profiles.
+- **Create Post:** Publish new posts through the create post interface.
+- **Profile Management:** View and edit your profile and view other users' profiles.
+
+## Contributing
+
+We welcome contributions to improve the app. Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+   Make your changes.
+3. Create a pull request with a clear description of your changes.
+
+## License
+
+This project is licensed under the MIT License - see the `LICENSE` file for details.
