@@ -11,7 +11,7 @@ import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 const UploadImage = () => {
   const navigation = useTypeNavigation();
   const {imageUri, setImageUri, handleSelectImage} = useUploadImage();
-  const {description, setDescription, submitImageHandler, imageState} =
+  const {description, setDescription, submitImageHandler} =
     useSubmitImageHandler(imageUri, setImageUri);
   return (
     <View style={styles.container}>
@@ -55,7 +55,7 @@ const UploadImage = () => {
             </View>
             <View>
               <Button style={{marginVertical: 21}} onPress={submitImageHandler}>
-                <Loader userStatus={imageState.status} text="Upload" />
+                <Loader text="Upload" />
               </Button>
             </View>
           </View>

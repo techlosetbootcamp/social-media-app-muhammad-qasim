@@ -1,7 +1,7 @@
 import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import Logo from '../../components/logo/Logo';
-import Backward from '../../components/backward/Backward';
+import GoBack from '../../components/goBack/GoBack';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import styles from './ForgotPasswordStyles';
@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Backward />
+        <GoBack />
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}

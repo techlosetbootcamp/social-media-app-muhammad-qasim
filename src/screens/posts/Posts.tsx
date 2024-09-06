@@ -94,7 +94,12 @@ const Posts = () => {
         }
         contentContainerStyle={styles.flatListContent}
       />
-      <LoadingOverlay visible={postsState?.status === 'loading'} />
+      <LoadingOverlay
+        visible={
+          postsState?.status === 'loading' ||
+          postsState?.uploadingStatus === 'loading'
+        }
+      />
     </View>
   );
 };

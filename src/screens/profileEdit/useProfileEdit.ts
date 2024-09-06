@@ -70,7 +70,7 @@ export const useProfileEdit = (imageUri: string | null) => {
         ...data,
         profilePicture: imageUri || data?.profilePicture || '',
       };
-      delete updatedData.images;
+      delete updatedData?.images;
       const error = validateUserData(updatedData);
       if (Object.keys(error).length > 0) {
         Object.values(error).forEach(err =>

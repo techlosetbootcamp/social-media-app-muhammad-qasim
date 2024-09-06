@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import React from 'react';
 import styles from './ProfileEditStyles';
 import ProfilePicture from '../../components/profilePicture/ProfilePicture';
-import HorizontalInput from '../../components/horizontalInput/HorizontalInput';
+import InlineInput from '../../components/inlineInput/InlineInput';
 import {useProfileEdit, useUploadImage} from './useProfileEdit';
 import LoadingOverlay from '../../components/loading/Loading';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
@@ -20,7 +20,6 @@ const ProfileEdit = () => {
           <Text style={styles.cancelBtn}>Cancel</Text>
         </TouchableOpacity>
         <Text style={styles.editProfileBtn}>Edit Profile</Text>
-
         <TouchableOpacity>
           <Text style={styles.doneBtn} onPress={handleSubmit}>
             Done
@@ -47,31 +46,31 @@ const ProfileEdit = () => {
           </View>
         </View>
         <View style={styles.editSection}>
-          <HorizontalInput
+          <InlineInput
             label="Name"
             placeholder="Name"
             value={data?.name || ''}
             onChangeText={text => handleChange('name', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Username"
             placeholder="Username"
             value={data?.username || ''}
             onChangeText={text => handleChange('username', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Website"
             placeholder="Website"
             value={data?.website || ''}
             onChangeText={text => handleChange('website', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Location"
             placeholder="Tokyo, Japan"
             value={data?.location || ''}
             onChangeText={text => handleChange('location', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Bio"
             placeholder="Bio"
             style={{borderBottomWidth: 0}}
@@ -82,20 +81,20 @@ const ProfileEdit = () => {
         </View>
         <View>
           <Text style={styles.privateInformation}>Private Information</Text>
-          <HorizontalInput
+          <InlineInput
             label="Email"
             placeholder="Email"
             value={data?.email || ''}
             disabled={true}
             onChangeText={text => handleChange('email', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Phone"
             placeholder="+92 XXXXXXXXXX"
             value={data?.phone || ''}
             onChangeText={text => handleChange('phone', text)}
           />
-          <HorizontalInput
+          <InlineInput
             label="Gender"
             placeholder="Male"
             value={data?.gender || ''}

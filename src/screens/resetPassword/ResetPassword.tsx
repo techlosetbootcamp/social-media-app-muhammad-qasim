@@ -1,7 +1,7 @@
 import {View, ScrollView} from 'react-native';
 import React from 'react';
 import Logo from '../../components/logo/Logo';
-import Backward from '../../components/backward/Backward';
+import GoBack from '../../components/goBack/GoBack';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import styles from './ResetPasswordStyles';
@@ -10,20 +10,17 @@ import Loader from '../../components/loader/Loader';
 
 const ResetPassword = () => {
   const {
-    setOldPassword,
-    setNewPassword,
-    setConfirmPassword,
+    handleChange,
     resetPasswordHandler,
     oldPassword,
     newPassword,
     confirmPassword,
     user,
   } = useResetPassword();
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Backward />
+        <GoBack />
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
@@ -34,19 +31,21 @@ const ResetPassword = () => {
             <Input
               placeholder="Old Password"
               secureTextEntry={true}
-              onChangeText={setOldPassword}
+              onChangeText={(text: string) => handleChange('oldPassword', text)}
               value={oldPassword}
             />
             <Input
               placeholder="New Password"
               secureTextEntry={true}
-              onChangeText={setNewPassword}
+              onChangeText={(text: string) => handleChange('newPassword', text)}
               value={newPassword}
             />
             <Input
               placeholder="Confirm Password"
               secureTextEntry={true}
-              onChangeText={setConfirmPassword}
+              onChangeText={(text: string) =>
+                handleChange('confirmPassword', text)
+              }
               value={confirmPassword}
             />
             <Button style={{marginVertical: 40}} onPress={resetPasswordHandler}>

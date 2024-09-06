@@ -79,7 +79,10 @@ export const validateResetPasswordData = (data: ResetPasswordData) => {
   if (data.newPassword !== data.confirmPassword) {
     errors.confirmPassword = 'Passwords do not match';
   }
-
+  if (data.newPassword === data.oldPassword) {
+    errors.newPassword = 'New password must be different from the old one';
+    errors.confirmPassword = 'New password must be different from the old one';
+  }
   return errors;
 };
 

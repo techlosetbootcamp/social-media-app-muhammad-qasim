@@ -2,8 +2,9 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {validateSubmitImageData} from '../../constants/FormSchema';
-import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
+import {useAppDispatch} from '../../hooks/reduxHook';
 import {uploadPost} from '../../store/slice/postsSlice';
+import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 export const useUploadImage = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -40,7 +41,7 @@ export const useSubmitImageHandler = (
 ) => {
   const [description, setDescription] = useState('');
   const dispatch = useAppDispatch();
-  const imageState = useAppSelector(state => state.posts);
+  const navigation = useTypeNavigation();
 
   const submitImageHandler = async () => {
     const errors = validateSubmitImageData({imageUri, description});
@@ -56,6 +57,7 @@ export const useSubmitImageHandler = (
         setDescription('');
         setImageUri(null);
         Toast.show({type: 'success', text1: 'Image uploaded successfully'});
+        navigation.navigate('Posts');
       }
     } catch (error) {
       Toast.show({
@@ -65,5 +67,5 @@ export const useSubmitImageHandler = (
     }
   };
 
-  return {description, setDescription, submitImageHandler, imageState};
+  return {description, setDescription, submitImageHandler};
 };

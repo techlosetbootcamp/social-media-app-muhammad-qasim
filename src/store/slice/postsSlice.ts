@@ -15,6 +15,7 @@ import {
 const initialState: PostsState = {
   posts: [],
   status: 'idle',
+  uploadingStatus: 'idle',
   error: null,
   lastDocumentId: null,
   isEndOfList: false,
@@ -43,7 +44,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
       }
 
       const imagesSnapshot = await imagesQuery?.get();
-      if (imagesSnapshot.empty) {
+      if (imagesSnapshot?.empty) {
         return {
           posts: [],
           lastDocumentId: null,
@@ -52,21 +53,21 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
         };
       }
 
-      const imagesData: Image[] = imagesSnapshot.docs.map(doc => {
-        const data = doc.data();
+      const imagesData: Image[] = imagesSnapshot?.docs?.map(doc => {
+        const data = doc?.data();
         return {
           imageUrl: data?.imageUrl,
           userId: data?.userId,
           description: data?.description,
           createdAt:
             data?.createdAt instanceof firestore.Timestamp
-              ? data?.createdAt.toDate().toISOString()
+              ? data?.createdAt?.toDate()?.toISOString()
               : new Date(data?.createdAt).toISOString(),
         };
       });
 
       const userIds = Array.from(
-        new Set(imagesData.map(image => image?.userId)),
+        new Set(imagesData?.map(image => image?.userId)),
       );
       const userPromises = userIds?.map(userId =>
         firestore().collection('users').where('userId', '==', userId).get(),
@@ -75,9 +76,9 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
       const usersSnapshots = await Promise.all(userPromises);
       const usersData: Record<string, PostUser> = {};
       usersSnapshots?.forEach(snapshot => {
-        snapshot.docs?.forEach(doc => {
+        snapshot?.docs?.forEach(doc => {
           const data = doc?.data();
-          usersData[data.userId] = {
+          usersData[data?.userId] = {
             id: data?.userId,
             email: data?.email,
             name: data?.name,
@@ -90,16 +91,17 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
           };
         });
       });
+
       const postsWithImagesAndUsers: Post[] = imagesData?.map(image => ({
         image,
-        user: usersData[image.userId],
+        user: usersData[image?.userId],
       }));
 
       return {
         posts: postsWithImagesAndUsers,
         lastDocumentId:
-          imagesSnapshot?.docs[imagesSnapshot?.docs?.length - 1]?.id,
-        isEndOfList: imagesSnapshot.docs.length < 10,
+          imagesSnapshot?.docs[imagesSnapshot?.docs?.length - 1].id,
+        isEndOfList: imagesSnapshot?.docs?.length < 10,
         refresh,
       };
     } catch (error) {
@@ -110,7 +112,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
 
 export const uploadPost = createAsyncThunk(
   'posts/uploadPost',
-  async ({imageUri, description}: UlpoadPost, {rejectWithValue}) => {
+  async ({imageUri, description}: UlpoadPost, {rejectWithValue, dispatch}) => {
     try {
       const fileExtension = imageUri?.split('.').pop() || 'jpg';
       if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -131,6 +133,8 @@ export const uploadPost = createAsyncThunk(
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
+      await dispatch(fetchMorePostsWithImagesAndUsers(true)).unwrap();
+
       return 'Image uploaded successfully';
     } catch (error) {
       return rejectWithValue('Failed to upload image');
@@ -145,20 +149,20 @@ const postsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchMorePostsWithImagesAndUsers.pending, state => {
-        state.status = state?.posts?.length === 0 ? 'loading' : 'loadingMore';
+        state.status = state.posts.length === 0 ? 'loading' : 'loadingMore';
       })
       .addCase(
         fetchMorePostsWithImagesAndUsers.fulfilled,
         (state, action: PayloadAction<FetchPostsPayload>) => {
           state.status = 'succeeded';
-          if (action.payload?.posts?.length > 0) {
+          if (action.payload.posts.length > 0) {
             if (action.payload.refresh) {
-              state.posts = action?.payload?.posts;
+              state.posts = action.payload.posts;
             } else {
-              state.posts = [...state?.posts, ...action?.payload?.posts];
+              state.posts = [...state.posts, ...action.payload.posts];
             }
-            state.lastDocumentId = action?.payload?.lastDocumentId;
-            state.isEndOfList = action?.payload?.isEndOfList;
+            state.lastDocumentId = action.payload.lastDocumentId;
+            state.isEndOfList = action.payload.isEndOfList;
           } else {
             state.isEndOfList = true;
           }
@@ -172,15 +176,15 @@ const postsSlice = createSlice({
 
     builder
       .addCase(uploadPost.pending, state => {
-        state.status = 'loading';
+        state.uploadingStatus = 'loading';
         state.error = null;
       })
       .addCase(uploadPost.fulfilled, state => {
-        state.status = 'succeeded';
+        state.uploadingStatus = 'succeeded';
         state.error = null;
       })
       .addCase(uploadPost.rejected, (state, action) => {
-        state.status = 'failed';
+        state.uploadingStatus = 'failed';
         state.error = action.payload as string;
       });
   },

@@ -8,6 +8,7 @@ export const usePosts = () => {
   const dispatch = useAppDispatch();
   const postsState = useAppSelector(state => state.posts);
   const [refreshing, setRefreshing] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       if (postsState?.status === 'idle' && postsState?.posts?.length === 0) {

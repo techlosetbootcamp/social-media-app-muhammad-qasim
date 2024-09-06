@@ -1,7 +1,7 @@
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import Logo from '../../components/logo/Logo';
-import Backward from '../../components/backward/Backward';
+import GoBack from '../../components/goBack/GoBack';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import styles from './LoginStyles';
@@ -12,13 +12,12 @@ import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 const Login = () => {
   const navigation = useTypeNavigation();
-  const {setIdentifier, setPassword, identifier, password, login, user} =
-    useLogin();
+  const {identifier, password, handleChange, login, user} = useLogin();
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Backward />
+        <GoBack />
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
@@ -29,13 +28,15 @@ const Login = () => {
             <View style={styles.formContainer}>
               <Input
                 placeholder="Email/Username"
-                onChangeText={setIdentifier}
+                onChangeText={(text: string) =>
+                  handleChange('identifier', text)
+                }
                 value={identifier}
               />
               <Input
                 placeholder="Password"
                 secureTextEntry={true}
-                onChangeText={setPassword}
+                onChangeText={(text: string) => handleChange('password', text)}
                 value={password}
               />
               <TouchableOpacity

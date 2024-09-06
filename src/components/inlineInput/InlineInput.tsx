@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
-import {HorizontalInputProps} from '../../types/types';
-import styles from './HorizontalInputStyles';
+import {InlineInputProps} from '../../types/types';
+import styles from './InlineInputStyles';
 
-const HorizontalInput: React.FC<HorizontalInputProps> = ({
+const InlineInput: React.FC<InlineInputProps> = ({
   label,
   placeholder,
   style,
@@ -28,4 +28,4 @@ const HorizontalInput: React.FC<HorizontalInputProps> = ({
     </View>
   );
 };
-export default HorizontalInput;
+export default InlineInput;

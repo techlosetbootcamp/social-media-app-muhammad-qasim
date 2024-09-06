@@ -1,6 +1,6 @@
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
-export const useBackward = () => {
+export const useGoBack = () => {
   const navigation = useTypeNavigation();
   const handleBack = () => {
     if (navigation.canGoBack()) {

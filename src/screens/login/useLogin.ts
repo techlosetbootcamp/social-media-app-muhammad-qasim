@@ -7,11 +7,18 @@ import Toast from 'react-native-toast-message';
 export const useLogin = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth);
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [formData, setFormData] = useState({
+    identifier: '',
+    password: '',
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setFormData(prevData => ({...prevData, [name]: value}));
+  };
 
   const login = async () => {
-    const errors = validateLoginData({identifier, password});
+    const errors = validateLoginData(formData);
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach(err =>
         Toast.show({type: 'error', text1: err}),
@@ -19,9 +26,16 @@ export const useLogin = () => {
       return;
     }
     try {
-      await dispatch(loginUser({identifier, password})).unwrap();
-      setIdentifier('');
-      setPassword('');
+      await dispatch(
+        loginUser({
+          identifier: formData?.identifier,
+          password: formData?.password,
+        }),
+      ).unwrap();
+      setFormData({
+        identifier: '',
+        password: '',
+      });
       Toast.show({type: 'success', text1: 'Login successful'});
     } catch (error) {
       Toast.show({type: 'error', text1: (error as string) || 'Login failed'});
@@ -29,11 +43,9 @@ export const useLogin = () => {
   };
 
   return {
-    setIdentifier,
-    setPassword,
-    identifier,
-    password,
+    handleChange,
     login,
+    ...formData,
     user,
   };
 };

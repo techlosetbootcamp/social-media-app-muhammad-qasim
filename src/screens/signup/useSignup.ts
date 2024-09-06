@@ -9,16 +9,22 @@ export const useSignup = () => {
   const dispatch = useAppDispatch();
   const navigation = useTypeNavigation();
   const user = useAppSelector(state => state.auth);
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    userName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const signup = async () => {
-    if (password !== confirmPassword) {
-      Toast.show({type: 'error', text1: 'Passwords do not match'});
-      return;
-    }
+    const {userName, email, password, confirmPassword} = formData;
     const errors = validateSignUpData({
       userName,
       email,
@@ -31,18 +37,16 @@ export const useSignup = () => {
       );
       return;
     }
+
     try {
-      await dispatch(
-        signupUser({
-          userName: userName,
-          email: email,
-          password,
-        }),
-      ).unwrap();
-      setUserName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
+      await dispatch(signupUser({userName, email, password})).unwrap();
+      setFormData({
+        userName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+
       Toast.show({
         type: 'success',
         text1: 'Signup successful',
@@ -55,15 +59,9 @@ export const useSignup = () => {
   };
 
   return {
-    setUserName,
-    setEmail,
-    setPassword,
-    setConfirmPassword,
+    handleChange,
     handleSignup: signup,
-    userName,
-    email,
-    password,
-    confirmPassword,
+    ...formData,
     user,
   };
 };

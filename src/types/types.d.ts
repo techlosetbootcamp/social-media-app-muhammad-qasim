@@ -74,11 +74,11 @@ export type ResetPassword = {
 };
 
 export type LoaderProps = {
-  userStatus: string;
+  userStatus?: string;
   text: string;
 };
 
-export type HorizontalInputProps = {
+export type InlineInputProps = {
   label: string;
   placeholder: string;
   style?: ViewStyle | TextStyle;
@@ -112,6 +112,7 @@ export type Post = {
 export type PostsState = {
   posts: Post[];
   status: 'idle' | 'loading' | 'loadingMore' | 'succeeded' | 'failed';
+  uploadingStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   lastDocumentId: string | null;
   isEndOfList: boolean;

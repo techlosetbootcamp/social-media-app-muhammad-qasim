@@ -9,16 +9,19 @@ import {resetStore} from '../../store/slice/resetSlice';
 export const useResetPassword = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth);
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [formData, setFormData] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setFormData(prevData => ({...prevData, [name]: value}));
+  };
 
   const resetPasswordHandler = async () => {
-    const errors = validateResetPasswordData({
-      oldPassword,
-      newPassword,
-      confirmPassword,
-    });
+    const errors = validateResetPasswordData(formData);
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach(err =>
         Toast.show({type: 'error', text1: err}),
@@ -26,12 +29,19 @@ export const useResetPassword = () => {
       return;
     }
     try {
-      await dispatch(resetPassword({oldPassword, newPassword})).unwrap();
+      await dispatch(
+        resetPassword({
+          oldPassword: formData?.oldPassword,
+          newPassword: formData?.newPassword,
+        }),
+      ).unwrap();
       await auth().signOut();
       dispatch(resetStore());
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      setFormData({
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
       Toast.show({
         type: 'success',
         text1: 'Password reset successful',
@@ -46,13 +56,9 @@ export const useResetPassword = () => {
   };
 
   return {
-    setOldPassword,
-    setNewPassword,
-    setConfirmPassword,
+    handleChange,
     resetPasswordHandler,
-    oldPassword,
-    newPassword,
-    confirmPassword,
+    ...formData,
     user,
   };
 };

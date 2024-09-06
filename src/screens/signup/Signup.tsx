@@ -1,7 +1,7 @@
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import Logo from '../../components/logo/Logo';
-import Backward from '../../components/backward/Backward';
+import GoBack from '../../components/goBack/GoBack';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import styles from './SignupStyles';
@@ -13,10 +13,7 @@ import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 const Signup = () => {
   const navigation = useTypeNavigation();
   const {
-    setUserName,
-    setEmail,
-    setPassword,
-    setConfirmPassword,
+    handleChange,
     handleSignup,
     userName,
     email,
@@ -24,11 +21,10 @@ const Signup = () => {
     confirmPassword,
     user,
   } = useSignup();
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Backward />
+        <GoBack />
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
@@ -39,24 +35,26 @@ const Signup = () => {
             <View style={styles.formContainer}>
               <Input
                 placeholder="Username"
-                onChangeText={setUserName}
+                onChangeText={(text: string) => handleChange('userName', text)}
                 value={userName}
               />
               <Input
                 placeholder="Email"
-                onChangeText={setEmail}
+                onChangeText={(text: string) => handleChange('email', text)}
                 value={email}
               />
               <Input
                 placeholder="Password"
                 secureTextEntry={true}
-                onChangeText={setPassword}
+                onChangeText={(text: string) => handleChange('password', text)}
                 value={password}
               />
               <Input
                 placeholder="Confirm Password"
                 secureTextEntry={true}
-                onChangeText={setConfirmPassword}
+                onChangeText={(text: string) =>
+                  handleChange('confirmPassword', text)
+                }
                 value={confirmPassword}
               />
               <Button style={{marginVertical: 28}} onPress={handleSignup}>
