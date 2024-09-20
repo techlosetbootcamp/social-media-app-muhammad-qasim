@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   flatListContent: {
     flexGrow: 1,
   },
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   header: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   profileOutline: {
     borderWidth: 1,
-    borderColor: Colors.lightGrey,
+    borderColor: COLORS.lightGrey,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   editProfile: {
     borderWidth: 1,
-    borderColor: Colors.lightGrey2,
+    borderColor: COLORS.lightGrey2,
     borderRadius: 6,
     paddingVertical: 6,
     width: '100%',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 13,
     lineHeight: 18,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   galleryImage: {
     width: '33.33%',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
 });
 

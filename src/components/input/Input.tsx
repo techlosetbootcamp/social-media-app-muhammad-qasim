@@ -2,12 +2,12 @@ import {TextInput, useColorScheme} from 'react-native';
 import React from 'react';
 import styles from './InputStyles';
 import {TextInputProps} from '../../types/types';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const Input: React.FC<TextInputProps> = ({placeholder, ...props}) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const textColor = isDarkMode ? Colors.white : Colors.black;
-  const placeholderColor = isDarkMode ? Colors.white : Colors.lightBlack;
+  const textColor = isDarkMode ? COLORS.white : COLORS.black;
+  const placeholderColor = isDarkMode ? COLORS.white : COLORS.lightBlack;
 
   return (
     <TextInput

@@ -7,16 +7,18 @@ import Button from '../../components/button/Button';
 import styles from './ResetPasswordStyles';
 import {useResetPassword} from './useResetPassword';
 import Loader from '../../components/loader/Loader';
+import {RESET_PASSWORD} from '../../constants/InputFields';
 
 const ResetPassword = () => {
   const {
     handleChange,
     resetPasswordHandler,
+    user,
     oldPassword,
     newPassword,
     confirmPassword,
-    user,
   } = useResetPassword();
+  const fields = RESET_PASSWORD({oldPassword, newPassword, confirmPassword});
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
@@ -28,26 +30,15 @@ const ResetPassword = () => {
         <View style={styles.main}>
           <View style={styles.container}>
             <Logo marginBottom={95} marginTop={80} />
-            <Input
-              placeholder="Old Password"
-              secureTextEntry={true}
-              onChangeText={(text: string) => handleChange('oldPassword', text)}
-              value={oldPassword}
-            />
-            <Input
-              placeholder="New Password"
-              secureTextEntry={true}
-              onChangeText={(text: string) => handleChange('newPassword', text)}
-              value={newPassword}
-            />
-            <Input
-              placeholder="Confirm Password"
-              secureTextEntry={true}
-              onChangeText={(text: string) =>
-                handleChange('confirmPassword', text)
-              }
-              value={confirmPassword}
-            />
+            {fields?.map(field => (
+              <Input
+                key={field?.key}
+                placeholder={field.placeholder}
+                secureTextEntry={field.secureTextEntry}
+                onChangeText={(text: string) => handleChange(field.key, text)}
+                value={field?.value}
+              />
+            ))}
             <Button style={{marginVertical: 40}} onPress={resetPasswordHandler}>
               <Loader userStatus={user.status} text="Reset Password" />
             </Button>

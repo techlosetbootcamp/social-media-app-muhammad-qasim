@@ -7,7 +7,7 @@ import LoadingOverlay from '../../components/loading/Loading';
 import UserName from '../../components/userName/UserName';
 import UserDescription from '../../components/userDescription/UserDescription';
 import Grid from '../../components/grid/Grid';
-import {logout} from '../../constants/Images';
+import {LOGOUT} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 const Profile = () => {
@@ -22,7 +22,7 @@ const Profile = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={logoutHandler}>
-          <Image source={logout} style={styles.logout} />
+          <Image source={LOGOUT} style={styles.logout} />
         </TouchableOpacity>
       </View>
       <UserName username={profileState?.profileData?.username} />

@@ -2,7 +2,7 @@ import {Image} from 'react-native';
 import React from 'react';
 import {ProfilePictureProps} from '../../types/types';
 import styles from './ProfilePictureStyles';
-import {profile} from '../../constants/Images';
+import {PROFILE} from '../../constants/Images';
 
 const ProfilePicture = ({
   width = 86,
@@ -11,7 +11,7 @@ const ProfilePicture = ({
 }: ProfilePictureProps) => {
   return (
     <Image
-      source={imageUri ? {uri: imageUri} : profile}
+      source={imageUri ? {uri: imageUri} : PROFILE}
       style={[styles.profilePicture, {width, height}]}
     />
   );

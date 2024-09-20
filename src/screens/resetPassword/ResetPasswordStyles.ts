@@ -1,16 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   header: {
     height: 44,
     justifyContent: 'center',
     paddingHorizontal: 16,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
     padding: 16,
   },
   container: {

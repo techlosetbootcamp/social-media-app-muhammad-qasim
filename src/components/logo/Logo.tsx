@@ -2,7 +2,7 @@ import {Image} from 'react-native';
 import React from 'react';
 import {LogoProps} from '../../types/types';
 import styles from './LogoStyles';
-import {instagramLogo} from '../../constants/Images';
+import {INSTAGRAMLOGO} from '../../constants/Images';
 
 const Logo = ({
   marginBottom = 39,
@@ -13,7 +13,7 @@ const Logo = ({
   return (
     <Image
       style={[styles.logoImage, {marginBottom, width, height, marginTop}]}
-      source={instagramLogo}
+      source={INSTAGRAMLOGO}
     />
   );
 };

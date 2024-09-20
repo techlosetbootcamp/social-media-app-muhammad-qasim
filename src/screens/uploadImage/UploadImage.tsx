@@ -5,7 +5,7 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import {useSubmitImageHandler, useUploadImage} from './useUploadImage';
 import Loader from '../../components/loader/Loader';
-import {select, upload} from '../../constants/Images';
+import {SELECT, UPLOAD} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 const UploadImage = () => {
@@ -23,7 +23,7 @@ const UploadImage = () => {
         </TouchableOpacity>
         <View style={styles.headerImage}>
           <Text style={styles.headerImageText}>Images</Text>
-          <Image source={select} />
+          <Image source={SELECT} />
         </View>
       </View>
       <ScrollView
@@ -37,7 +37,7 @@ const UploadImage = () => {
               style={styles.uploadImage}
               onPress={handleSelectImage}>
               <View style={styles.uploadImageText}>
-                <Image source={upload} style={{width: 44, height: 48}} />
+                <Image source={UPLOAD} style={{width: 44, height: 48}} />
                 <Text style={styles.uploadText}>Upload Image</Text>
               </View>
             </TouchableOpacity>

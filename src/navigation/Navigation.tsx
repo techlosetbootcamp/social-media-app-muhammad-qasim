@@ -1,13 +1,18 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import useNavigation from './useNavigation';
-import {authRoutes, guestRoutes} from '../constants/NavigationRoutes';
+import {AUTH_ROUTES, GUEST_ROUTES} from '../constants/NavigationRoutes';
 
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const currentUser = useNavigation();
-  const routes = currentUser ? authRoutes : guestRoutes;
+  const isAuthenticated =
+    currentUser &&
+    currentUser?.displayName &&
+    currentUser?.email &&
+    currentUser?.uid;
+  const routes = isAuthenticated ? AUTH_ROUTES : GUEST_ROUTES;
 
   return (
     <Stack.Navigator

@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/reduxHook';
 import {fetchProfile, updateProfile} from '../../store/slice/profileSlice';
 import Toast from 'react-native-toast-message';
-import {validateUserData} from '../../constants/FormSchema';
+import {validateUserData} from '../../utils/validation';
 import {User} from '../../types/types';
 import {launchImageLibrary} from 'react-native-image-picker';
 

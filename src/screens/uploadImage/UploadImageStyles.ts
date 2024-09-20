@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   header: {
     flexDirection: 'row',
@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   headerImageText: {
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   uploadImage: {
     borderWidth: 1,
-    borderColor: Colors.darkBlack,
+    borderColor: COLORS.darkBlack,
     borderStyle: 'dashed',
     width: '100%',
     height: 362,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 17,
-    color: Colors.black,
+    color: COLORS.black,
   },
   descContainer: {
     flex: 1,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 13,
     lineHeight: 18,
-    color: Colors.black,
+    color: COLORS.black,
     marginBottom: 8,
   },
   uploadedImage: {

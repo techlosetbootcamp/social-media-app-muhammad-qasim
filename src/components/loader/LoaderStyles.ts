@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 17,
-    color: Colors.white,
+    color: COLORS.white,
     textAlign: 'center',
   },
 });

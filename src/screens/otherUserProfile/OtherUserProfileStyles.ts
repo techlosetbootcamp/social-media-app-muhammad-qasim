@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   profileContainer: {
     alignItems: 'center',
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   profileOutline: {
     borderWidth: 1,
-    borderColor: Colors.lightGrey,
+    borderColor: COLORS.lightGrey,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
 });
 

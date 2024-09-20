@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {signupUser} from '../../store/slice/authSlice';
-import {validateSignUpData} from '../../constants/FormSchema';
+import {validateSignUpData} from '../../utils/validation';
 import Toast from 'react-native-toast-message';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 

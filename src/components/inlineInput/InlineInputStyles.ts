@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 19,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   textInput: {
     borderStyle: 'solid',
     borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGrey,
+    borderBottomColor: COLORS.lightGrey,
     width: '100%',
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 19,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
 });
 

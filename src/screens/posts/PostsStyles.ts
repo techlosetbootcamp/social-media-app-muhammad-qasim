@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   flatListContent: {
@@ -7,12 +7,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   logoContainer: {
     alignItems: 'center',
-    backgroundColor: Colors.grey,
-    borderBottomColor: Colors.lightGrey,
+    backgroundColor: COLORS.grey,
+    borderBottomColor: COLORS.lightGrey,
     borderBottomWidth: 1,
     borderStyle: 'solid',
   },
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 13,
     lineHeight: 18,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   country: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   postInfo: {
     paddingHorizontal: 15,
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 13,
     lineHeight: 18,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   date: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
   postImage: {
     width: '100%',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
   emptyContainer: {
     flex: 1,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
   verifiedIcon: {
     width: 9.8,

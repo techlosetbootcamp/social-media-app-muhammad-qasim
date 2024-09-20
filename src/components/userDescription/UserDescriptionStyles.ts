@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   profileName: {
@@ -7,14 +7,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 14,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   profileDesc: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 12,
     lineHeight: 17,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
     textAlign: 'center',
     marginTop: 1,
     maxWidth: '70%',

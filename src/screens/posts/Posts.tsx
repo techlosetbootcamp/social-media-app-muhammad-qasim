@@ -6,7 +6,7 @@ import ProfilePicture from '../../components/profilePicture/ProfilePicture';
 import {usePosts} from './usePosts';
 import LoadingOverlay from '../../components/loading/Loading';
 import {Post} from '../../types/types';
-import {more, verified} from '../../constants/Images';
+import {MORE, VERIFIED} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 
 const Posts = () => {
@@ -40,13 +40,13 @@ const Posts = () => {
               <View>
                 <View style={styles.nameSection}>
                   <Text style={styles.name}>{item?.user?.name}</Text>
-                  <Image source={verified} style={styles.verifiedIcon} />
+                  <Image source={VERIFIED} style={styles.verifiedIcon} />
                 </View>
                 <Text style={styles.country}>{item?.user?.location}</Text>
               </View>
             </View>
           </TouchableOpacity>
-          <Image source={more} style={styles.moreIcon} />
+          <Image source={MORE} style={styles.moreIcon} />
         </View>
         <Image source={{uri: item?.image?.imageUrl}} style={styles.postImage} />
         <View style={styles.postInfo}>

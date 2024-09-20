@@ -1,37 +1,37 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 12,
-    backgroundColor: Colors.grey,
+    backgroundColor: COLORS.grey,
   },
   cancelBtn: {
     fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   editProfileBtn: {
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.black,
+    color: COLORS.black,
   },
   doneBtn: {
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.blue,
+    color: COLORS.blue,
   },
   profileSection: {
     alignItems: 'center',
@@ -47,21 +47,21 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 13,
     lineHeight: 21,
-    color: Colors.blue,
+    color: COLORS.blue,
   },
   editSection: {
     borderTopWidth: 0.5,
-    borderTopColor: Colors.lightGrey,
+    borderTopColor: COLORS.lightGrey,
     borderStyle: 'solid',
     borderBottomWidth: 0.5,
-    borderBottomColor: Colors.lightGrey,
+    borderBottomColor: COLORS.lightGrey,
   },
   privateInformation: {
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 15,
     lineHeight: 20,
-    color: Colors.black,
+    color: COLORS.black,
     paddingVertical: 14,
     paddingHorizontal: 16,
   },
@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 16,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
     textAlign: 'center',
   },
   resetPassword: {
-    color: Colors.quaternary,
+    color: COLORS.quaternary,
     fontSize: 14,
     lineHeight: 16,
   },

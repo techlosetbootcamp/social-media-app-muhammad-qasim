@@ -8,23 +8,23 @@ import ProfileEdit from '../screens/profileEdit/ProfileEdit';
 import ResetPassword from '../screens/resetPassword/ResetPassword';
 import Signup from '../screens/signup/Signup';
 import UploadImage from '../screens/uploadImage/UploadImage';
-import {home, uploadPage} from './Images';
+import {HOME, UPLOADPAGE} from './Images';
 
-export const authRoutes = [
+export const AUTH_ROUTES = [
   {name: 'Home', component: BottomTabNavigation},
   {name: 'OtherUserProfile', component: OtherUserProfile},
   {name: 'ProfileEdit', component: ProfileEdit},
   {name: 'ResetPassword', component: ResetPassword},
 ];
 
-export const guestRoutes = [
+export const GUEST_ROUTES = [
   {name: 'Login', component: Login},
   {name: 'Signup', component: Signup},
   {name: 'ForgotPassword', component: ForgotPassword},
 ];
 
-export const tabScreens = [
-  {name: 'Posts', component: Posts, icon: home},
-  {name: 'UploadImage', component: UploadImage, icon: uploadPage},
+export const TAB_SCREENS = [
+  {name: 'Posts', component: Posts, icon: HOME},
+  {name: 'UploadImage', component: UploadImage, icon: UPLOADPAGE},
   {name: 'Profile', component: Profile, isProfile: true},
 ];

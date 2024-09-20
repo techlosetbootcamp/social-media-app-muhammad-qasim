@@ -1,10 +1,10 @@
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 14,
-    backgroundColor: Colors.quaternary,
+    backgroundColor: COLORS.quaternary,
     borderRadius: 6,
     width: '100%',
     alignItems: 'center',
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 17,
-    color: Colors.white,
+    color: COLORS.white,
     textAlign: 'center',
   },
 });

@@ -1,9 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import useNavigation from './useNavigation';
 import {View, Image} from 'react-native';
-import {Colors} from '../constants/Colors';
+import {COLORS} from '../constants/Colors';
 import ProfilePicture from '../components/profilePicture/ProfilePicture';
-import {tabScreens} from '../constants/NavigationRoutes';
+import {TAB_SCREENS} from '../constants/NavigationRoutes';
 
 const Tab = createBottomTabNavigator();
 function BottomTabNavigation() {
@@ -19,7 +19,7 @@ function BottomTabNavigation() {
               <View
                 style={{
                   borderWidth: 1,
-                  borderColor: Colors.darkBlack,
+                  borderColor: COLORS.darkBlack,
                   borderRadius: 50,
                   width: 27,
                   height: 27,
@@ -34,7 +34,7 @@ function BottomTabNavigation() {
               </View>
             );
           }
-          const tabScreen = tabScreens.find(
+          const tabScreen = TAB_SCREENS.find(
             screen => screen?.name === route?.name,
           );
           return (
@@ -43,7 +43,7 @@ function BottomTabNavigation() {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? Colors.darkBlack : Colors.black,
+                tintColor: focused ? COLORS.darkBlack : COLORS.black,
               }}
             />
           );
@@ -54,7 +54,7 @@ function BottomTabNavigation() {
           display: route?.name === 'UploadImage' ? 'none' : 'flex',
         },
       })}>
-      {tabScreens?.map(screen => (
+      {TAB_SCREENS?.map(screen => (
         <Tab.Screen
           key={screen?.name}
           name={screen?.name}

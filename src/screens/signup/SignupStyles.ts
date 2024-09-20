@@ -1,16 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   header: {
     height: 44,
     justifyContent: 'center',
     paddingHorizontal: 16,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS.white,
     padding: 16,
   },
   container: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 17,
-    color: Colors.black,
+    color: COLORS.black,
     marginLeft: 10,
   },
   orContainer: {
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: Colors.lightBlack,
+    backgroundColor: COLORS.lightBlack,
   },
   orText: {
     fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 14,
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
     marginHorizontal: 31,
   },
   haveAccountContainer: {
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
     textAlign: 'center',
-    color: Colors.lightBlack2,
+    color: COLORS.lightBlack2,
   },
   login: {
-    color: Colors.quaternary,
+    color: COLORS.quaternary,
     fontSize: 14,
     lineHeight: 16,
   },

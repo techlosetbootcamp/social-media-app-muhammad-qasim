@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TextInput, useColorScheme} from 'react-native';
 import {InlineInputProps} from '../../types/types';
 import styles from './InlineInputStyles';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const InlineInput: React.FC<InlineInputProps> = ({
   label,
@@ -14,8 +14,8 @@ const InlineInput: React.FC<InlineInputProps> = ({
   multiline = false,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const textColor = isDarkMode ? Colors.white : Colors.black;
-  const placeholderColor = isDarkMode ? Colors.white : Colors.lightBlack;
+  const textColor = isDarkMode ? COLORS.white : COLORS.black;
+  const placeholderColor = isDarkMode ? COLORS.white : COLORS.lightBlack;
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

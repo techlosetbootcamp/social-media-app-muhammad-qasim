@@ -175,6 +175,17 @@ export type SubmitImageData = {
   description: string;
 };
 
+export type ProfileEditFields = {
+  name?: string;
+  username?: string;
+  website?: string;
+  location?: string;
+  bio?: string;
+  email?: string;
+  phone?: string;
+  gender?: string;
+};
+
 export type UserData = {
   username: string;
   email: string;
@@ -185,4 +196,22 @@ export type UserData = {
   location?: string;
   phone?: string;
   gender?: string;
+};
+
+export type ResetPasswordFields = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type LoginFields = {
+  identifier: string;
+  password: string;
+};
+
+export type SignupFields = {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 };

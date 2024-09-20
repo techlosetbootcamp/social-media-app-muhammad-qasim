@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   nameContainer: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 21,
-    color: Colors.darkBlack,
+    color: COLORS.darkBlack,
   },
   childMargin: {
     marginTop: 11,

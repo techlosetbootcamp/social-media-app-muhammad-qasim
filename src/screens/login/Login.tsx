@@ -7,12 +7,14 @@ import Button from '../../components/button/Button';
 import styles from './LoginStyles';
 import {useLogin} from './useLogin';
 import Loader from '../../components/loader/Loader';
-import {googleIcon} from '../../constants/Images';
+import {GOOGLEICON} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
+import {LOGIN} from '../../constants/InputFields';
 
 const Login = () => {
   const navigation = useTypeNavigation();
-  const {identifier, password, handleChange, login, user} = useLogin();
+  const {handleChange, login, user, identifier, password} = useLogin();
+  const fields = LOGIN({identifier, password});
 
   return (
     <View style={styles.wrapper}>
@@ -26,19 +28,17 @@ const Login = () => {
           <View style={styles.container}>
             <Logo marginBottom={39} marginTop={80} />
             <View style={styles.formContainer}>
-              <Input
-                placeholder="Email/Username"
-                onChangeText={(text: string) =>
-                  handleChange('identifier', text)
-                }
-                value={identifier}
-              />
-              <Input
-                placeholder="Password"
-                secureTextEntry={true}
-                onChangeText={(text: string) => handleChange('password', text)}
-                value={password}
-              />
+              {fields?.map(field => (
+                <Input
+                  key={field?.key}
+                  placeholder={field?.placeholder}
+                  secureTextEntry={field?.secureTextEntry || false}
+                  onChangeText={(text: string) =>
+                    handleChange(field?.key, text)
+                  }
+                  value={field?.value}
+                />
+              ))}
               <TouchableOpacity
                 onPress={() => navigation.navigate('ForgotPassword')}
                 style={styles.touchableArea}>
@@ -48,7 +48,7 @@ const Login = () => {
                 <Loader userStatus={user.status} text="Login" />
               </Button>
               <TouchableOpacity style={styles.loginWithGoogle}>
-                <Image source={googleIcon} style={styles.googleIcon} />
+                <Image source={GOOGLEICON} style={styles.googleIcon} />
                 <Text style={styles.loginWithGoogleText}>
                   Login with Google
                 </Text>

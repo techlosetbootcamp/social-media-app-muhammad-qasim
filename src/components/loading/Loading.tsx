@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, View, ActivityIndicator} from 'react-native';
 import styles from './LoadingStyles';
-import {Colors} from '../../constants/Colors';
+import {COLORS} from '../../constants/Colors';
 
 const LoadingOverlay = ({visible}: {visible: boolean}) => {
   return (
@@ -12,7 +12,7 @@ const LoadingOverlay = ({visible}: {visible: boolean}) => {
       onRequestClose={() => {}}>
       <View style={styles.overlay}>
         <View>
-          <ActivityIndicator size="large" color={Colors.quaternary} />
+          <ActivityIndicator size="large" color={COLORS.quaternary} />
         </View>
       </View>
     </Modal>

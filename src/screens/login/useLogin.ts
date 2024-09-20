@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {loginUser} from '../../store/slice/authSlice';
-import {validateLoginData} from '../../constants/FormSchema';
+import {validateLoginData} from '../../utils/validation';
 import Toast from 'react-native-toast-message';
 
 export const useLogin = () => {

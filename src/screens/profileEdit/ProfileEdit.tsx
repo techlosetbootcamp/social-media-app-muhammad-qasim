@@ -6,12 +6,15 @@ import InlineInput from '../../components/inlineInput/InlineInput';
 import {useProfileEdit, useUploadImage} from './useProfileEdit';
 import LoadingOverlay from '../../components/loading/Loading';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
+import {PROFILE_EDIT} from '../../constants/InputFields';
+import {User} from '../../types/types';
 
 const ProfileEdit = () => {
   const navigation = useTypeNavigation();
   const {imageUri, handleSelectImage} = useUploadImage();
   const {data, profileState, handleSubmit, handleChange} =
     useProfileEdit(imageUri);
+  const {firstFields, secondFields} = PROFILE_EDIT(data);
 
   return (
     <>
@@ -46,60 +49,34 @@ const ProfileEdit = () => {
           </View>
         </View>
         <View style={styles.editSection}>
-          <InlineInput
-            label="Name"
-            placeholder="Name"
-            value={data?.name || ''}
-            onChangeText={text => handleChange('name', text)}
-          />
-          <InlineInput
-            label="Username"
-            placeholder="Username"
-            value={data?.username || ''}
-            onChangeText={text => handleChange('username', text)}
-          />
-          <InlineInput
-            label="Website"
-            placeholder="Website"
-            value={data?.website || ''}
-            onChangeText={text => handleChange('website', text)}
-          />
-          <InlineInput
-            label="Location"
-            placeholder="Tokyo, Japan"
-            value={data?.location || ''}
-            onChangeText={text => handleChange('location', text)}
-          />
-          <InlineInput
-            label="Bio"
-            placeholder="Bio"
-            style={{borderBottomWidth: 0}}
-            multiline={true}
-            value={data?.bio || ''}
-            onChangeText={text => handleChange('bio', text)}
-          />
+          {firstFields?.map(field => (
+            <InlineInput
+              key={field?.field}
+              label={field?.label}
+              placeholder={field?.placeholder}
+              value={field?.value}
+              onChangeText={text =>
+                handleChange(field?.field as keyof User, text)
+              }
+              multiline={field?.multiline}
+              style={field?.style}
+            />
+          ))}
         </View>
         <View>
           <Text style={styles.privateInformation}>Private Information</Text>
-          <InlineInput
-            label="Email"
-            placeholder="Email"
-            value={data?.email || ''}
-            disabled={true}
-            onChangeText={text => handleChange('email', text)}
-          />
-          <InlineInput
-            label="Phone"
-            placeholder="+92 XXXXXXXXXX"
-            value={data?.phone || ''}
-            onChangeText={text => handleChange('phone', text)}
-          />
-          <InlineInput
-            label="Gender"
-            placeholder="Male"
-            value={data?.gender || ''}
-            onChangeText={text => handleChange('gender', text)}
-          />
+          {secondFields?.map(field => (
+            <InlineInput
+              key={field?.field}
+              label={field?.label}
+              placeholder={field?.placeholder}
+              value={field?.value}
+              onChangeText={text =>
+                handleChange(field?.field as keyof User, text)
+              }
+              disabled={field?.disabled}
+            />
+          ))}
         </View>
         <View style={styles.resetPasswordContainer}>
           <Text style={styles.changePassword}>

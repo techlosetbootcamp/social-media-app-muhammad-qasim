@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
 import {resetPassword} from '../../store/slice/authSlice';
-import {validateResetPasswordData} from '../../constants/FormSchema';
+import {validateResetPasswordData} from '../../utils/validation';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import {resetStore} from '../../store/slice/resetSlice';
