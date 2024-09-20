@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {FirebaseUser} from '../types/types';
 import {useAppSelector} from '../hooks/reduxHook';
 
-const useAuthNavigation = () => {
+const useNavigation = () => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser>(null);
   const user = useAppSelector(state => state.auth.user);
   const profile = useAppSelector(state => state.profile.profileData);
@@ -18,4 +18,4 @@ const useAuthNavigation = () => {
   return currentUser;
 };
 
-export default useAuthNavigation;
+export default useNavigation;

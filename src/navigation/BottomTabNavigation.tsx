@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import useAuthNavigation from './AuthNavigation';
+import useNavigation from './useNavigation';
 import {View, Image} from 'react-native';
 import {Colors} from '../constants/Colors';
 import ProfilePicture from '../components/profilePicture/ProfilePicture';
@@ -7,7 +7,7 @@ import {tabScreens} from '../constants/NavigationRoutes';
 
 const Tab = createBottomTabNavigator();
 function BottomTabNavigation() {
-  const currentUser = useAuthNavigation();
+  const currentUser = useNavigation();
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({

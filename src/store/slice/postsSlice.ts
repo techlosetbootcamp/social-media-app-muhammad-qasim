@@ -26,9 +26,9 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
   boolean
 >(
   'posts/fetchMorePostsWithImagesAndUsers',
-  async (refresh = false, thunkAPI) => {
+  async (refresh = false, {rejectWithValue, getState}) => {
     try {
-      const state = thunkAPI.getState() as RootState;
+      const state = getState() as RootState;
       const lastDocumentId = refresh ? null : state?.posts?.lastDocumentId;
       let imagesQuery = firestore()
         .collection('images')
@@ -105,7 +105,7 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
         refresh,
       };
     } catch (error) {
-      return thunkAPI.rejectWithValue('Failed to fetch more posts.');
+      return rejectWithValue('Failed to fetch more posts.');
     }
   },
 );

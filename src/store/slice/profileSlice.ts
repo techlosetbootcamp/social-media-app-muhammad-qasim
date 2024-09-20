@@ -12,12 +12,12 @@ const initialState: ProfileState = {
 
 export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
-  async (userId: string | undefined, thunkAPI) => {
+  async (userId: string | undefined, {rejectWithValue}) => {
     try {
       const currentUser = auth().currentUser;
       const uid = userId || currentUser?.uid;
       if (!uid) {
-        return thunkAPI.rejectWithValue(
+        return rejectWithValue(
           'No user ID provided and no current user is signed in.',
         );
       }
@@ -28,7 +28,7 @@ export const fetchProfile = createAsyncThunk(
         .get();
 
       if (userSnapshot.empty) {
-        return thunkAPI.rejectWithValue('No user found with the provided UID.');
+        return rejectWithValue('No user found with the provided UID.');
       }
 
       const profileData = userSnapshot?.docs[0]?.data();
@@ -47,14 +47,14 @@ export const fetchProfile = createAsyncThunk(
 
       return profileWithImages;
     } catch (error) {
-      return thunkAPI.rejectWithValue('Failed to fetch profile.');
+      return rejectWithValue('Failed to fetch profile.');
     }
   },
 );
 
 export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
-  async (data: User, thunkAPI) => {
+  async (data: User, {rejectWithValue}) => {
     try {
       const userName = data?.username
         ?.trim()
@@ -62,13 +62,13 @@ export const updateProfile = createAsyncThunk(
         .replace(/\s+/g, '_');
       const user = auth().currentUser;
       if (!user) {
-        return thunkAPI.rejectWithValue('No user is currently signed in.');
+        return rejectWithValue('No user is currently signed in.');
       }
 
       const userDocRef = firestore().collection('users').doc(user.uid);
       const userDoc = await userDocRef?.get();
       if (!userDoc?.exists) {
-        return thunkAPI.rejectWithValue('User does not exist.');
+        return rejectWithValue('User does not exist.');
       }
       const existingUserByUsername = await firestore()
         .collection('users')
@@ -79,7 +79,7 @@ export const updateProfile = createAsyncThunk(
         !existingUserByUsername?.empty &&
         existingUserByUsername?.docs[0]?.id !== user?.uid
       ) {
-        return thunkAPI.rejectWithValue('Username already exists.');
+        return rejectWithValue('Username already exists.');
       }
 
       if (
@@ -88,7 +88,7 @@ export const updateProfile = createAsyncThunk(
       ) {
         const fileExtension = data?.profilePicture?.split('.').pop() || 'jpg';
         if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-          return thunkAPI.rejectWithValue('Unsupported file type');
+          return rejectWithValue('Unsupported file type');
         }
         const fileName = `${new Date().toISOString()}.${fileExtension}`;
         const reference = storage().ref(fileName);
@@ -100,7 +100,7 @@ export const updateProfile = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue('Failed to update profile.');
+      return rejectWithValue('Failed to update profile.');
     }
   },
 );

@@ -65,7 +65,7 @@ export const signupUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async (data: LoginUser, thunkAPI) => {
+  async (data: LoginUser, {rejectWithValue}) => {
     try {
       let identifier = data?.identifier?.trim().toLowerCase();
       if (!identifier?.includes('@')) {
@@ -78,13 +78,11 @@ export const loginUser = createAsyncThunk(
           .where('username', '==', email)
           .get();
         if (userSnapshot.empty) {
-          return thunkAPI.rejectWithValue(
-            'No user found with the provided username.',
-          );
+          return rejectWithValue('No user found with the provided username.');
         }
         email = userSnapshot?.docs[0]?.data()?.email;
         if (!email) {
-          return thunkAPI.rejectWithValue('Failed to retrieve the user email.');
+          return rejectWithValue('Failed to retrieve the user email.');
         }
       }
       const userCredential = await auth().signInWithEmailAndPassword(
@@ -98,24 +96,22 @@ export const loginUser = createAsyncThunk(
       };
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
-        return thunkAPI.rejectWithValue('User not found. Please try again.');
+        return rejectWithValue('User not found. Please try again.');
       }
       if (error.code === 'auth/invalid-credential') {
-        return thunkAPI.rejectWithValue(
-          'Invalid credential. Please try again.',
-        );
+        return rejectWithValue('Invalid credential. Please try again.');
       }
       if (error.code === 'auth/wrong-password') {
-        return thunkAPI.rejectWithValue('Wrong password. Please try again.');
+        return rejectWithValue('Wrong password. Please try again.');
       }
-      return thunkAPI.rejectWithValue('An error occurred during login.');
+      return rejectWithValue('An error occurred during login.');
     }
   },
 );
 
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
-  async (email: string, thunkAPI) => {
+  async (email: string, {rejectWithValue}) => {
     try {
       const normalizedEmail = email?.trim().toLowerCase();
       const userSnapshot = await firestore()
@@ -124,27 +120,23 @@ export const forgotPassword = createAsyncThunk(
         .get();
 
       if (userSnapshot.empty) {
-        return thunkAPI.rejectWithValue(
-          'No user found with the provided email.',
-        );
+        return rejectWithValue('No user found with the provided email.');
       }
       await auth().sendPasswordResetEmail(normalizedEmail);
       return 'Password reset email sent';
     } catch (error) {
-      return thunkAPI.rejectWithValue(
-        'An error occurred during password reset.',
-      );
+      return rejectWithValue('An error occurred during password reset.');
     }
   },
 );
 
 export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async ({oldPassword, newPassword}: ResetPassword, thunkAPI) => {
+  async ({oldPassword, newPassword}: ResetPassword, {rejectWithValue}) => {
     try {
       const user = auth().currentUser;
       if (!user) {
-        return thunkAPI.rejectWithValue('No user is currently signed in.');
+        return rejectWithValue('No user is currently signed in.');
       }
       const credential = auth.EmailAuthProvider.credential(
         user?.email!,
@@ -155,16 +147,12 @@ export const resetPassword = createAsyncThunk(
       return 'Password has been updated.';
     } catch (error: any) {
       if (error.code === 'auth/wrong-password') {
-        return thunkAPI.rejectWithValue('Wrong password. Please try again.');
+        return rejectWithValue('Wrong password. Please try again.');
       }
       if (error.code === 'auth/invalid-credential') {
-        return thunkAPI.rejectWithValue(
-          'Invalid credential. Please try again.',
-        );
+        return rejectWithValue('Invalid credential. Please try again.');
       }
-      return thunkAPI.rejectWithValue(
-        'An error occurred during password reset.',
-      );
+      return rejectWithValue('An error occurred during password reset.');
     }
   },
 );
