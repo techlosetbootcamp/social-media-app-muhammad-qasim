@@ -33,9 +33,9 @@ const ResetPassword = () => {
             {fields?.map(field => (
               <Input
                 key={field?.key}
-                placeholder={field.placeholder}
-                secureTextEntry={field.secureTextEntry}
-                onChangeText={(text: string) => handleChange(field.key, text)}
+                placeholder={field?.placeholder}
+                secureTextEntry={field?.secureTextEntry}
+                onChangeText={(text: string) => handleChange(field?.key, text)}
                 value={field?.value}
               />
             ))}

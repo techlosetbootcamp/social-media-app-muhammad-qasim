@@ -7,7 +7,7 @@ import Button from '../../components/button/Button';
 import styles from './LoginStyles';
 import {useLogin} from './useLogin';
 import Loader from '../../components/loader/Loader';
-import {GOOGLEICON} from '../../constants/Images';
+import {GOOGLE_ICON} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 import {LOGIN} from '../../constants/InputFields';
 
@@ -48,7 +48,7 @@ const Login = () => {
                 <Loader userStatus={user.status} text="Login" />
               </Button>
               <TouchableOpacity style={styles.loginWithGoogle}>
-                <Image source={GOOGLEICON} style={styles.googleIcon} />
+                <Image source={GOOGLE_ICON} style={styles.googleIcon} />
                 <Text style={styles.loginWithGoogleText}>
                   Login with Google
                 </Text>

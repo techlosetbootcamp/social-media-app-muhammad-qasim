@@ -8,7 +8,7 @@ import ProfileEdit from '../screens/profileEdit/ProfileEdit';
 import ResetPassword from '../screens/resetPassword/ResetPassword';
 import Signup from '../screens/signup/Signup';
 import UploadImage from '../screens/uploadImage/UploadImage';
-import {HOME, UPLOADPAGE} from './Images';
+import {HOME, UPLOAD_PAGE} from './Images';
 
 export const AUTH_ROUTES = [
   {name: 'Home', component: BottomTabNavigation},
@@ -25,6 +25,6 @@ export const GUEST_ROUTES = [
 
 export const TAB_SCREENS = [
   {name: 'Posts', component: Posts, icon: HOME},
-  {name: 'UploadImage', component: UploadImage, icon: UPLOADPAGE},
+  {name: 'UploadImage', component: UploadImage, icon: UPLOAD_PAGE},
   {name: 'Profile', component: Profile, isProfile: true},
 ];

@@ -7,7 +7,7 @@ import Button from '../../components/button/Button';
 import styles from './SignupStyles';
 import {useSignup} from './useSignup';
 import Loader from '../../components/loader/Loader';
-import {GOOGLEICON} from '../../constants/Images';
+import {GOOGLE_ICON} from '../../constants/Images';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
 import {SIGNUP} from '../../constants/InputFields';
 
@@ -50,7 +50,7 @@ const Signup = () => {
                 <Loader userStatus={user?.status} text="Signup" />
               </Button>
               <TouchableOpacity style={styles.loginWithGoogle}>
-                <Image source={GOOGLEICON} style={styles.googleIcon} />
+                <Image source={GOOGLE_ICON} style={styles.googleIcon} />
                 <Text style={styles.loginWithGoogleText}>
                   Signup with Google
                 </Text>
