@@ -64,7 +64,6 @@ export const updateProfile = createAsyncThunk(
       if (!user) {
         return rejectWithValue('No user is currently signed in.');
       }
-
       const userDocRef = firestore().collection('users').doc(user.uid);
       const userDoc = await userDocRef?.get();
       if (!userDoc?.exists) {

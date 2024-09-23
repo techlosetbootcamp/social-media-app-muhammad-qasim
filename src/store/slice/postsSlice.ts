@@ -72,7 +72,6 @@ export const fetchMorePostsWithImagesAndUsers = createAsyncThunk<
       const userPromises = userIds?.map(userId =>
         firestore().collection('users').where('userId', '==', userId).get(),
       );
-
       const usersSnapshots = await Promise.all(userPromises);
       const usersData: Record<string, PostUser> = {};
       usersSnapshots?.forEach(snapshot => {

@@ -13,7 +13,14 @@ import {LOGIN} from '../../constants/InputFields';
 
 const Login = () => {
   const navigation = useTypeNavigation();
-  const {handleChange, login, user, identifier, password} = useLogin();
+  const {
+    handleChange,
+    login,
+    user,
+    identifier,
+    password,
+    handleLoginWithGoogle,
+  } = useLogin();
   const fields = LOGIN({identifier, password});
 
   return (
@@ -47,7 +54,9 @@ const Login = () => {
               <Button style={{marginVertical: 30}} onPress={login}>
                 <Loader userStatus={user.status} text="Login" />
               </Button>
-              <TouchableOpacity style={styles.loginWithGoogle}>
+              <TouchableOpacity
+                style={styles.loginWithGoogle}
+                onPress={handleLoginWithGoogle}>
                 <Image source={GOOGLE_ICON} style={styles.googleIcon} />
                 <Text style={styles.loginWithGoogleText}>
                   Login with Google

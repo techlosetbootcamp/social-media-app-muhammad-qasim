@@ -1,8 +1,9 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import auth from '@react-native-firebase/auth';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {
   AuthState,
   LoginUser,
+  ReduxUser,
   ResetPassword,
   SignupUser,
 } from '../../types/types';
@@ -109,6 +110,44 @@ export const loginUser = createAsyncThunk(
   },
 );
 
+export const loginGoogle = createAsyncThunk(
+  'auth/loginGoogle',
+  async (user: FirebaseAuthTypes.User, {rejectWithValue}) => {
+    try {
+      const email = user?.email?.trim().toLowerCase() || '';
+      const displayName = user?.displayName?.trim() || '';
+      const username =
+        displayName.toLowerCase().replace(/\s+/g, '_') || email.split('@')[0];
+      const phone = user?.phoneNumber || '';
+      const profilePicture = user?.photoURL || '';
+      const userId = user?.uid;
+
+      if (!userId || !email || !displayName) {
+        return rejectWithValue('Failed to retrieve necessary user data.');
+      }
+      await firestore().collection('users').doc(userId).set({
+        username,
+        email,
+        name: displayName,
+        phone,
+        profilePicture,
+        userId,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+      return {
+        uid: userId,
+        email: email,
+        displayName: displayName,
+      };
+    } catch (error: any) {
+      if (error.code === 'auth/network-request-failed') {
+        return rejectWithValue('Network request failed. Please try again.');
+      }
+      return rejectWithValue('An error occurred during login.');
+    }
+  },
+);
+
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email: string, {rejectWithValue}) => {
@@ -182,6 +221,17 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
+      })
+      .addCase(loginGoogle.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(loginGoogle.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.user = action.payload as ReduxUser;
+      })
+      .addCase(loginGoogle.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
       })

@@ -21,6 +21,7 @@ const Signup = () => {
     email,
     password,
     confirmPassword,
+    handleSignInWithGoogle,
   } = useSignup();
   const fields = SIGNUP({userName, email, password, confirmPassword});
   return (
@@ -49,7 +50,9 @@ const Signup = () => {
               <Button style={{marginVertical: 28}} onPress={handleSignup}>
                 <Loader userStatus={user?.status} text="Signup" />
               </Button>
-              <TouchableOpacity style={styles.loginWithGoogle}>
+              <TouchableOpacity
+                style={styles.loginWithGoogle}
+                onPress={handleSignInWithGoogle}>
                 <Image source={GOOGLE_ICON} style={styles.googleIcon} />
                 <Text style={styles.loginWithGoogleText}>
                   Signup with Google

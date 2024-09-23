@@ -1,13 +1,16 @@
 import {useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks/reduxHook';
-import {signupUser} from '../../store/slice/authSlice';
+import {loginGoogle, signupUser} from '../../store/slice/authSlice';
 import {validateSignUpData} from '../../utils/validation';
 import Toast from 'react-native-toast-message';
 import useTypeNavigation from '../../hooks/useTypeNavigationHook';
+import useGoogleLogin from '../../hooks/useGoogleLogin';
+import firestore from '@react-native-firebase/firestore';
 
 export const useSignup = () => {
   const dispatch = useAppDispatch();
   const navigation = useTypeNavigation();
+  const {signIn} = useGoogleLogin();
   const user = useAppSelector(state => state.auth);
   const [formData, setFormData] = useState({
     userName: '',
@@ -58,10 +61,39 @@ export const useSignup = () => {
     }
   };
 
+  const handleSignInWithGoogle = async () => {
+    try {
+      const userInfo = await signIn();
+      const user = userInfo?.user;
+      const userId = user?.uid;
+      if (!user || !userId) {
+        Toast.show({type: 'error', text1: 'Google Sign-in Failed'});
+        return;
+      }
+      const userDoc = await firestore().collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        Toast.show({
+          type: 'success',
+          text1: 'Google Sign-in Successful',
+          text2: 'Welcome back!',
+        });
+        return;
+      }
+      dispatch(loginGoogle(user));
+      Toast.show({type: 'success', text1: 'Google Sign-in Successful'});
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: (error as string) || 'An error occurred during sign-in',
+      });
+    }
+  };
+
   return {
     handleChange,
     handleSignup: signup,
     ...formData,
     user,
+    handleSignInWithGoogle,
   };
 };
