@@ -67,12 +67,17 @@ export const validateForgotPasswordData = (data: ForgotPasswordData) => {
 
 export const validateResetPasswordData = (data: ResetPasswordData) => {
   const errors: {[key: string]: string} = {};
+  if (!data.oldPassword || !data.newPassword || !data.confirmPassword) {
+    errors.emptyFields = 'All password fields are required';
+    return errors;
+  }
   if (data.oldPassword.length < 6) {
     errors.oldPassword = 'Password must be at least 6 characters long';
   }
   if (data.newPassword.length < 6) {
     errors.newPassword = 'Password must be at least 6 characters long';
   }
+
   if (data.confirmPassword.length < 6) {
     errors.confirmPassword = 'Password must be at least 6 characters long';
   }
@@ -83,6 +88,7 @@ export const validateResetPasswordData = (data: ResetPasswordData) => {
     errors.newPassword = 'New password must be different from the old one';
     errors.confirmPassword = 'New password must be different from the old one';
   }
+
   return errors;
 };
 
